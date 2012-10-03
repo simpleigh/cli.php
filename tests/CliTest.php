@@ -64,4 +64,33 @@ class CliTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('cheddar', $cli->get('c'));
     $this->assertEquals('cheddar', $cli->get('cheese'));
   }
+
+  /**
+   * Test parsing non options
+   */
+  function testParsingNonOptions() {
+    $cli = new Cli(array(
+      'cli.php',
+      '-p',
+      '--cheese',
+      'cheddar',
+      'extra',
+      '-b',
+      'info'
+    ));
+    $cli->option('-p, --peppers', 'Add peppers');
+    $cli->option('-c, --cheese [type]', 'Add a cheese');
+
+    $cli->parse();
+
+    $this->assertTrue($cli->get('p'));
+    $this->assertTrue($cli->get('peppers'));
+
+    $this->assertEquals('cheddar', $cli->get('c'));
+    $this->assertEquals('cheddar', $cli->get('cheese'));
+
+    $this->assertEquals('extra', $cli->get(0));
+    $this->assertEquals('-b', $cli->get(1));
+    $this->assertEquals('info', $cli->get(2));
+  }
 }
