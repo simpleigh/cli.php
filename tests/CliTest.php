@@ -93,4 +93,11 @@ class CliTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('-b', $cli->get(1));
     $this->assertEquals('info', $cli->get(2));
   }
+
+  /**
+   * Test required
+   */
+  function testRequired() {
+    $this->assertTrue(false);
+  }
 }
