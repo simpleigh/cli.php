@@ -3,18 +3,24 @@
  * Cli class
  */
 class Cli {
-  protected $params = array();
   protected $options = array();
+  protected $inputs = array();
+  protected $pinputs = array(); // processed inputs
   protected $required = array();
+  protected $name; // name of script
 
   /**
    * Constructor
    *
    * @param params - array of input parameters
    */
-  function __construct($params = NULL) {
-    if($params == NULL && isset($argv)) $params = $argv;
-    $this->params = $params;
+  function __construct($inputs = NULL) {
+    if($inputs == NULL && isset($argv)) $inputs = $argv;
+
+    // remove name from script inputs
+    $this->name = $inputs[0];
+    unset($inputs[0]);
+    $this->inputs = array_values($inputs);
   }
 
   /**
@@ -57,6 +63,55 @@ class Cli {
   }
 
   /**
+   * Parse
+   * Process inputs
+   */
+  public function parse() {
+    // loop through inputs and compare them against options
+    for($key = 0; $key < count($this->inputs); $key++) {
+      $input = $this->inputs[$key];
+      // check input is a flag and is in options
+      if(
+        $this->checkFlag($input)
+        && array_key_exists(
+          $flag = $this->parseFlag($input),
+          $this->options
+        )
+      ) {
+        // check if next input should be in input
+        if(array_key_exists('input', $this->options[$flag]) && $this->options[$flag]['input'] == true) {
+          $this->pinputs[$this->options[$flag]['short']] = $this->inputs[$key + 1];
+          $this->pinputs[$this->options[$flag]['long']] = $this->inputs[$key + 1];
+          $key++;
+          continue;
+        } else { // just set flag as true
+          $this->pinputs[$this->options[$flag]['short']] = true;
+          $this->pinputs[$this->options[$flag]['long']] = true;
+        }
+      } else { // else just add input to parsed inputs
+        $this->pinputs[] = $input;
+      }
+    }
+  }
+
+  /**
+   * Check if input is a flag
+   */
+  private function checkFlag($string) {
+    if(preg_match('/-\w|--\w+/', $string)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Parse flag
+   */
+  private function parseFlag($flag) {
+    return preg_replace('/--|-/', '', $flag);
+  }
+
+  /**
    * Get options
    */
   public function setOption($name, $options) {
@@ -68,5 +123,32 @@ class Cli {
    */
   public function getOptions() {
     return $this->options;
+  }
+
+  /**
+   * Get Name
+   */
+  public function getName() {
+    return $this->name;
+  }
+
+  /**
+   * Get inputs
+   *
+   * Get all inputs unmodified
+   */
+  public function getInputs() {
+    return $this->inputs;
+  }
+
+  /**
+   * Get input
+   */
+  public function get($flag) {
+    if(!array_key_exists($flag, $this->pinputs)) {
+      throw new Exception('Input cannot be found');
+    } else {
+      return $this->pinputs[$flag];
+    }
   }
 }
