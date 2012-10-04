@@ -38,8 +38,24 @@ __Gives:__
 	 - Cheddar cheese
 	On white bread
 
-__Prompts__
+### Prompts
 
-## Outputs.php
+Prompt the user for information.
 
-## Log.php
+__Example:__
+	
+	<?php
+	require('lib/Inputs.php');
+	$cli = new Inputs();
+
+	$username = $cli->prompt('Username: ');
+	echo 'Got '.$username."\n";
+
+	$password = $cli->prompt('Password (not a real one): ', true);
+	echo 'Got '.$password."\n";
+
+	$confirm = $cli->confirm('Confirm? ');
+	echo var_dump($confirm);
+
+__N.B.__ Confirm returns true on a "y" or "yes". It returns false otherwise. 
+
