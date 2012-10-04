@@ -8,6 +8,7 @@ Parse command line inputs
 
 __Example:__
 
+``
 	require('lib/Inputs.php');
 	$cli = new Inputs();
 
@@ -22,6 +23,7 @@ __Example:__
   if($cli->get('m')) echo " - Mayonaise \n";
   if($cli->get('cheese')) echo ' - '.$cli->get('cheese')." cheese \n";
   echo 'On '.$cli->get('b')." bread \n";
+``
   
 __Run:__
 
