@@ -46,7 +46,7 @@ class Inputs {
 		if($required) $options['required'] = true;
 
     $this->setOption($options['short'], $options);
-    $this->setOption($options['long'], $options);
+    //$this->setOption($options['long'], $options);
   }
 
   /**
@@ -75,31 +75,32 @@ class Inputs {
    */
   public function parse() {
 		// loop through options and see if they are in the inputs
-    // loop through inputs and compare them against options
-    for($key = 0; $key < count($this->inputs); $key++) {
-      $input = $this->inputs[$key];
-      // check input is a flag and is in options
-      if(
-        $this->checkFlag($input)
-        && array_key_exists(
-          $flag = $input,
-          $this->options
-        )
-      ) {
-        // check if next input should be in input
-        if(array_key_exists('input', $this->options[$flag]) && $this->options[$flag]['input'] == true) {
-          $this->pinputs[$this->options[$flag]['short']] = $this->inputs[$key + 1];
-          $this->pinputs[$this->options[$flag]['long']] = $this->inputs[$key + 1];
-          $key++;
-          continue;
-        } else { // just set flag as true
-          $this->pinputs[$this->options[$flag]['short']] = true;
-          $this->pinputs[$this->options[$flag]['long']] = true;
-        }
-      } else { // else just add input to parsed inputs
-        $this->pinputs[] = $input;
-      }
-    }
+		foreach($this->options as $option => $info) {
+			// if option is in inputs
+			$key = $this->checkInputs($info['short'], $info['long'], $this->inputs);
+			if($key === false) {
+				$this->pinputs[$info['short']] = false;
+				$this->pinputs[$info['long']] = false;
+			} else {
+				// check if next input should be in input
+        if(array_key_exists('input', $info) && $info['input'] == true) {
+          $this->pinputs[$info['short']] = $this->inputs[$key + 1];
+          $this->pinputs[$info['long']] = $this->inputs[$key + 1];
+					unset($this->inputs[$key]); // remove flag from inputs array
+					unset($this->inputs[$key + 1]);
+				} else {
+					$this->pinputs[$info['short']] = true;
+					$this->pinputs[$info['long']] = true;
+					unset($this->inputs[$key]);
+				}
+			}
+		}
+
+		// loop through remaining flags and insert them at their indexes
+		if(!empty($this->inputs)) {
+			$this->inputs = array_values($this->inputs);
+		}
+		$this->pinputs =  array_merge($this->inputs, $this->pinputs);
 
 		// check required inputs
 		try {
@@ -113,6 +114,23 @@ class Inputs {
   }
 
 	/**
+	 * Check input for flag
+	 */
+	private function checkInputs($short, $long, $inputs) {
+		$key = array_search($short, $this->inputs);
+		if($key === false) {
+			$key = array_search($long, $this->inputs);
+			if($key === false) {
+				return false;
+			} else {
+				return $key;
+			}
+		} else {
+			return $key;
+		}
+	}
+
+	/**
 	 * Check required options
 	 * If a required option is not provided then throw and exception
 	 */
@@ -122,22 +140,12 @@ class Inputs {
 			// if option is required
 			if(array_key_exists('required', $option) && $option['required'] == true) {
 				// check that it is defined in pinputs
-				if(!array_key_exists($option['short'], $this->pinputs)) {
+				if($this->pinputs[$option['short']] == false) {
 					throw new Exception($option['help'].' is required');
 				}
 			}
 		}
 	}
-
-  /**
-   * Check if input is a flag
-   */
-  private function checkFlag($string) {
-    if(preg_match('/-\w|--\w+/', $string)) {
-      return true;
-    }
-    return false;
-  }
 
   /**
    * Get options
@@ -153,20 +161,18 @@ class Inputs {
     return $this->options;
   }
 
+	/**
+	 * Get inputs
+	 */
+	public function getInputs() {
+		return $this->pinputs;
+	}
+
   /**
    * Get Name
    */
   public function getName() {
     return $this->name;
-  }
-
-  /**
-   * Get inputs
-   *
-   * Get all inputs unmodified
-   */
-  public function getInputs() {
-    return $this->inputs;
   }
 
   /**

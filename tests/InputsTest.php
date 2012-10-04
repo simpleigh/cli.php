@@ -16,15 +16,12 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
     $options = $cli->getOptions();
 
-    $this->assertCount(4, $options);
+    $this->assertCount(2, $options);
 
     $this->assertArrayHasKey('-p', $options);
     $this->assertArrayHasKey('-c', $options);
 
-    $this->assertArrayHasKey('--peppers', $options);
-    $this->assertArrayHasKey('--cheese', $options);
-
-    $this->assertTrue($options['--cheese']['input']);
+    $this->assertTrue($options['-c']['input']);
   }
 
   /**
@@ -37,6 +34,8 @@ class InputsTest extends PHPUnit_Framework_TestCase {
     ));
 
     $this->assertEquals('cli.php', $cli->getName());
+
+		$cli->parse();
 
     $inputs = $cli->getInputs();
     $this->assertEquals('-p', $inputs[0]);
@@ -54,6 +53,7 @@ class InputsTest extends PHPUnit_Framework_TestCase {
     ));
     $cli->option('-p, --peppers', 'Add peppers');
     $cli->option('-c, --cheese [type]', 'Add a cheese');
+    $cli->option('-m, --mayo', 'Add mayonaise');
 
     $cli->parse();
 
@@ -62,6 +62,9 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals('cheddar', $cli->get('-c'));
     $this->assertEquals('cheddar', $cli->get('--cheese'));
+
+    $this->assertFalse($cli->get('-m'));
+    $this->assertFalse($cli->get('--mayo'));
   }
 
   /**
