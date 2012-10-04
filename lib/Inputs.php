@@ -211,4 +211,20 @@ class Inputs {
 		}
 		return $input;
 	}
+
+	/**
+	 * Add a confirmation 
+	 *
+	 * Returns true if yes, false if anything else
+	 */
+	public static function confirm($msg) {
+		echo $msg;
+		$input = trim(fgets(STDIN));
+
+		if(strtolower($input) == 'y' || strtolower($input) == 'yes') {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
