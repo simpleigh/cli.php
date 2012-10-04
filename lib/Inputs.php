@@ -1,8 +1,10 @@
 <?php
 /**
- * Cli class
+ * Inputs class
+ *
+ * Parses command line inputs
  */
-class Cli {
+class Inputs {
   protected $options = array();
   protected $inputs = array();
   protected $pinputs = array(); // processed inputs

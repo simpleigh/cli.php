@@ -1,17 +1,16 @@
 <?php
 /**
- * CLI test
+ * Inputs test
  */
 require_once "PHPUnit/Autoload.php";
-require_once "lib/Cli.php";
+require_once "lib/Inputs.php";
 
-class CliTest extends PHPUnit_Framework_TestCase {
-
+class InputsTest extends PHPUnit_Framework_TestCase {
   /**
    * Test adding options
    */
   function testOption() {
-    $cli = new Cli(array('cli.php'));
+    $cli = new Inputs(array('cli.php'));
     $cli->option('-p, --peppers', 'Add peppers');
     $cli->option('-c, --cheese [type]', 'Add a cheese');
 
@@ -32,7 +31,7 @@ class CliTest extends PHPUnit_Framework_TestCase {
    * Test get name
    */
   function testGetName() {
-    $cli = new Cli(array(
+    $cli = new Inputs(array(
       'cli.php',
       '-p'
     ));
@@ -47,7 +46,7 @@ class CliTest extends PHPUnit_Framework_TestCase {
    * Test parse
    */
   function testParse() {
-    $cli = new Cli(array(
+    $cli = new Inputs(array(
       'cli.php',
       '-p',
       '--cheese',
@@ -69,7 +68,7 @@ class CliTest extends PHPUnit_Framework_TestCase {
    * Test parsing non options
    */
   function testParsingNonOptions() {
-    $cli = new Cli(array(
+    $cli = new Inputs(array(
       'cli.php',
       '-p',
       '--cheese',
