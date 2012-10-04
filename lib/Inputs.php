@@ -17,12 +17,12 @@ class Inputs {
    * @param params - array of input parameters
    */
   function __construct($inputs = NULL) {
-    if($inputs == NULL && isset($argv)) $inputs = $argv;
-
     // remove name from script inputs
     $this->name = $inputs[0];
     unset($inputs[0]);
-    $this->inputs = array_values($inputs);
+		if(!empty($inputs)) {
+			$this->inputs = array_values($inputs);
+		}
   }
 
   /**
@@ -35,8 +35,8 @@ class Inputs {
    * Example:
    *    $cli->option('-p, --peppers', 'Add peppers');
    *    $cli->option('-c, --cheese [type]', 'Add a cheese', true);
-   *    $cli->get('p'); // true/false
-   *    $cli->get('c'); // cheese type
+   *    $cli->get('-p'); // true/false
+   *    $cli->get('-c'); // cheese type
    */
   public function option($flags, $help, $required = NULL) {
     $options = $this->parseOption($flags);
@@ -56,7 +56,7 @@ class Inputs {
     $output = array();
     $exploded = explode(',', $string);
 
-    $output['short'] = substr($exploded[0], 1); // short flag
+    $output['short'] = $exploded[0]; // short flag
 
     $regex = '/\[(.*)\]/';
     $output['long'] = $exploded[1];
@@ -64,7 +64,7 @@ class Inputs {
       $output['long'] = preg_replace($regex, '', $exploded[1]); // replace input from string
       $output['input'] = true; // set input as true
     }
-    $output['long'] = substr(trim($output['long']), 2);
+    $output['long'] = trim($output['long']);
 
     return $output;
   }
@@ -74,6 +74,7 @@ class Inputs {
    * Process inputs
    */
   public function parse() {
+		// loop through options and see if they are in the inputs
     // loop through inputs and compare them against options
     for($key = 0; $key < count($this->inputs); $key++) {
       $input = $this->inputs[$key];
@@ -81,7 +82,7 @@ class Inputs {
       if(
         $this->checkFlag($input)
         && array_key_exists(
-          $flag = $this->parseFlag($input),
+          $flag = $input,
           $this->options
         )
       ) {
@@ -101,7 +102,14 @@ class Inputs {
     }
 
 		// check required inputs
-		$this->checkRequired();
+		try {
+			$this->checkRequired();
+		} catch(Exception $e) {
+			echo $e->getMessage().PHP_EOL;
+			return false;
+		}
+
+		return true;
   }
 
 	/**
@@ -129,13 +137,6 @@ class Inputs {
       return true;
     }
     return false;
-  }
-
-  /**
-   * Parse flag
-   */
-  private function parseFlag($flag) {
-    return preg_replace('/--|-/', '', $flag);
   }
 
   /**
@@ -173,9 +174,35 @@ class Inputs {
    */
   public function get($flag) {
     if(!array_key_exists($flag, $this->pinputs)) {
-      throw new Exception('Input cannot be found');
+      throw new Exception('Input '.$flag.' cannot be found');
     } else {
       return $this->pinputs[$flag];
     }
   }
+
+	/**
+	 * Prompt
+	 * Add a new prompt
+	 *
+	 * $msg - message to display
+	 * $password - is a password input or not (don't display text)
+	 *
+	 * N.B. Linux only
+	 *
+	 * Returns input from prompt
+	 */
+	public static function prompt($msg, $password = NULL) {
+		// output message
+		echo $msg;
+		// if password then disable text output
+		if($password != NULL) system('stty -echo');
+
+		$input = trim(fgets(STDIN));
+
+		if($password != NULL) {
+			system('stty echo');
+			echo PHP_EOL; // output end of line because the user's CR won't have been outputted
+		}
+		return $input;
+	}
 }

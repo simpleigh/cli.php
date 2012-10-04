@@ -18,13 +18,13 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
     $this->assertCount(4, $options);
 
-    $this->assertArrayHasKey('p', $options);
-    $this->assertArrayHasKey('c', $options);
+    $this->assertArrayHasKey('-p', $options);
+    $this->assertArrayHasKey('-c', $options);
 
-    $this->assertArrayHasKey('peppers', $options);
-    $this->assertArrayHasKey('cheese', $options);
+    $this->assertArrayHasKey('--peppers', $options);
+    $this->assertArrayHasKey('--cheese', $options);
 
-    $this->assertTrue($options['cheese']['input']);
+    $this->assertTrue($options['--cheese']['input']);
   }
 
   /**
@@ -57,11 +57,11 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
     $cli->parse();
 
-    $this->assertTrue($cli->get('p'));
-    $this->assertTrue($cli->get('peppers'));
+    $this->assertTrue($cli->get('-p'));
+    $this->assertTrue($cli->get('--peppers'));
 
-    $this->assertEquals('cheddar', $cli->get('c'));
-    $this->assertEquals('cheddar', $cli->get('cheese'));
+    $this->assertEquals('cheddar', $cli->get('-c'));
+    $this->assertEquals('cheddar', $cli->get('--cheese'));
   }
 
   /**
@@ -82,11 +82,11 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
     $cli->parse();
 
-    $this->assertTrue($cli->get('p'));
-    $this->assertTrue($cli->get('peppers'));
+    $this->assertTrue($cli->get('-p'));
+    $this->assertTrue($cli->get('--peppers'));
 
-    $this->assertEquals('cheddar', $cli->get('c'));
-    $this->assertEquals('cheddar', $cli->get('cheese'));
+    $this->assertEquals('cheddar', $cli->get('-c'));
+    $this->assertEquals('cheddar', $cli->get('--cheese'));
 
     $this->assertEquals('extra', $cli->get(0));
     $this->assertEquals('-b', $cli->get(1));
@@ -105,7 +105,7 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 		$cli->option('-b, --bread [type]', 'Type of bread', true);
 
 		// expect parse to throw an exception that input is not defined
-		$this->setExpectedException('Exception');
+		$this->expectOutputString("-b, --bread [type] Type of bread is required\n");
 
     $cli->parse();
   }
