@@ -18,7 +18,6 @@ __Example:__
 	$cli->option('-b, --bread [type]', 'Type of bread', true);
 	
 	echo "You ordered a sandwich with: \n";
-	
 	if($cli->get('p')) echo " - Ham \n";
 	if($cli->get('m')) echo " - Mayonaise \n";
 	if($cli->get('cheese')) echo ' - '.$cli->get('cheese')." cheese \n";
