@@ -97,6 +97,16 @@ class InputsTest extends PHPUnit_Framework_TestCase {
    * Test required
    */
   function testRequired() {
-    $this->assertTrue(false);
+    $cli = new Inputs(array(
+      'cli.php',
+      '-p'
+    ));
+    $cli->option('-h, --ham', 'Add ham');
+		$cli->option('-b, --bread [type]', 'Type of bread', true);
+
+		// expect parse to throw an exception that input is not defined
+		$this->setExpectedException('Exception');
+
+    $cli->parse();
   }
 }

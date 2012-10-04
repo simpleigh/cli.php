@@ -2,7 +2,7 @@
 
 A small collection of php classes to help with CLI utilities. 
 
-## Inputs
+## Inputs.php
 
 Parse command line inputs
 
@@ -15,7 +15,7 @@ __Example:__
 	$cli->option('-h, --ham', 'Add ham');
 	$cli->option('-m, --mayo', 'Add mayonaise');
 	$cli->option('-c, --cheese [type]', 'Add a cheese');
-	$cli->option('-b, --bread [type]', 'Type of bread', true);
+	$cli->option('-b, --bread [type]', 'Type of bread', true); // required input
 	
 	echo "You ordered a sandwich with: \n";
 	if($cli->get('p')) echo " - Ham \n";
@@ -34,3 +34,8 @@ __Gives:__
 	 - Cheddar cheese
 	On white bread
 
+__Prompts__
+
+## Outputs.php
+
+## Log.php

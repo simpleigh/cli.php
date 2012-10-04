@@ -40,6 +40,11 @@ class Inputs {
    */
   public function option($flags, $help, $required = NULL) {
     $options = $this->parseOption($flags);
+
+		$options['help'] = $flags.' '.$help;
+
+		if($required) $options['required'] = true;
+
     $this->setOption($options['short'], $options);
     $this->setOption($options['long'], $options);
   }
@@ -94,7 +99,27 @@ class Inputs {
         $this->pinputs[] = $input;
       }
     }
+
+		// check required inputs
+		$this->checkRequired();
   }
+
+	/**
+	 * Check required options
+	 * If a required option is not provided then throw and exception
+	 */
+	private function checkRequired() {
+		// Loop through all options
+		foreach($this->options as $key => $option) {
+			// if option is required
+			if(array_key_exists('required', $option) && $option['required'] == true) {
+				// check that it is defined in pinputs
+				if(!array_key_exists($option['short'], $this->pinputs)) {
+					throw new Exception($option['help'].' is required');
+				}
+			}
+		}
+	}
 
   /**
    * Check if input is a flag
