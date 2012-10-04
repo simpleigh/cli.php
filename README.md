@@ -8,6 +8,7 @@ Parse command line inputs
 
 __Example:__
 
+	<?php
 	require('lib/Inputs.php');
 	$cli = new Inputs();
 	
