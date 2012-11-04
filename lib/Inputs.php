@@ -41,12 +41,11 @@ class Inputs {
     public function option($flags, $help, $required = NULL) {
         $options = $this->parseOption($flags);
 
-            $options['help'] = $flags.' '.$help;
+        $options['help'] = $flags.' '.$help;
 
-            if($required) $options['required'] = true;
+        if($required) $options['required'] = true;
 
         $this->setOption($options['short'], $options);
-        //$this->setOption($options['long'], $options);
     }
 
     /**
@@ -225,6 +224,15 @@ class Inputs {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Output help text
+     */
+    public function outputHelp() {
+        foreach($this->options as $option) {
+            var_dump($option);
         }
     }
 }
