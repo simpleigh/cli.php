@@ -1,6 +1,6 @@
 {
     "name": "fusepump/cli.php",
-    "description": "Cli helper for PHP",
+    "description": "CLI helper for PHP",
     "authors": [
         {
             "name": "Jonathan Kim",
@@ -12,6 +12,6 @@
         "php": ">=5.2.0"
     },
     "autoload": {
-        "psr-0": { "cli.php": "lib/" }
+        "psr-0": { "CLI": "lib/" }
     }
 }
