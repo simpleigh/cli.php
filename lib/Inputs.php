@@ -257,7 +257,12 @@ class Inputs {
         echo PHP_EOL.PHP_EOL;
         echo "Options:".PHP_EOL;
         foreach($this->options as $option) {
-            echo "\t".$option['help'].PHP_EOL;
+            $output = "\t".$option['help'];
+            if(array_key_exists('required', $option) && $option['required'] == true) {
+                $output .= " [required]";
+            }
+            $output .= PHP_EOL;
+            echo $output;
         }
         echo "\t".$this->helpOption.PHP_EOL;
     }

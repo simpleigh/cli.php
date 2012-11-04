@@ -126,9 +126,10 @@ class InputsTest extends PHPUnit_Framework_TestCase {
         $cli->option('-p, --peppers', 'Add peppers');
         $cli->option('-c, --cheese [type]', 'Add a cheese');
         $cli->option('-m, --mayo', 'Add mayonaise');
+        $cli->option('-b, --bread [type]', 'Type of bread', true);
 
         $cli->parse();
 
-        $this->expectOutputString("Usage: cli.php [options]\n\nOptions:\n\t-p, --peppers Add peppers\n\t-c, --cheese [type] Add a cheese\n\t-m, --mayo Add mayonaise\n\t-h, --help Output usage information\n");
+        $this->expectOutputString("Usage: cli.php [options]\n\nOptions:\n\t-p, --peppers Add peppers\n\t-c, --cheese [type] Add a cheese\n\t-m, --mayo Add mayonaise\n\t-b, --bread [type] Type of bread [required]\n\t-h, --help Output usage information\n");
     }
 }
