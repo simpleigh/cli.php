@@ -1,0 +1,14 @@
+{
+    "name": "fusepump/cli.php",
+    "description": "Cli helper for PHP",
+    "authors": [
+        {
+            "name": "Jonathan Kim",
+            "email": "jonathan.kim@fusepump.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    }
+}
