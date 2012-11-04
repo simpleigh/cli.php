@@ -11,7 +11,7 @@ $cli->option('-c, --cheese [type]', 'Add a cheese');
 $cli->option('-b, --bread [type]', 'Type of bread', true); // required input
 
 if(!$cli->parse()) {
-	exit(1);	
+    exit(1);
 }
 
 echo "You ordered a sandwich with: \n";
