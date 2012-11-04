@@ -10,6 +10,7 @@ class Inputs {
     protected $pinputs = array(); // processed inputs
     protected $required = array();
     protected $name; // name of script
+    protected $helpOption = "-h, --help Output usage information";
 
     /**
      * Constructor
@@ -60,8 +61,8 @@ class Inputs {
         $regex = '/\[(.*)\]/';
         $output['long'] = $exploded[1];
         if(preg_match($regex, $exploded[1])) { // check for input
-          $output['long'] = preg_replace($regex, '', $exploded[1]); // replace input from string
-          $output['input'] = true; // set input as true
+            $output['long'] = preg_replace($regex, '', $exploded[1]); // replace input from string
+            $output['input'] = true; // set input as true
         }
         $output['long'] = trim($output['long']);
 
@@ -73,6 +74,17 @@ class Inputs {
      * Process inputs
      */
     public function parse() {
+        try {
+            // check if a help flag is set
+            $key = $this->checkInputs('-h', '--help', $this->inputs);
+            if($key !== false) {
+                throw new Exception('Help flag is set');
+            }
+        } catch(Exception $e) {
+            $this->outputHelp();
+            return false;
+        }
+
         // loop through options and see if they are in the inputs
         foreach($this->options as $option => $info) {
             // if option is in inputs
@@ -82,9 +94,9 @@ class Inputs {
                 $this->pinputs[$info['long']] = false;
             } else {
                 // check if next input should be in input
-        if(array_key_exists('input', $info) && $info['input'] == true) {
-          $this->pinputs[$info['short']] = $this->inputs[$key + 1];
-          $this->pinputs[$info['long']] = $this->inputs[$key + 1];
+                if(array_key_exists('input', $info) && $info['input'] == true) {
+                    $this->pinputs[$info['short']] = $this->inputs[$key + 1];
+                    $this->pinputs[$info['long']] = $this->inputs[$key + 1];
                     unset($this->inputs[$key]); // remove flag from inputs array
                     unset($this->inputs[$key + 1]);
                 } else {
@@ -229,10 +241,24 @@ class Inputs {
 
     /**
      * Output help text
+     *
+     * Format:
+     *
+     * Usage: {{name}} [options]
+     *
+     * Options:
+     *      -p, --peppers Add peppers
+     *      -c, --cheese [type] Add a cheese
+     *      -m, --mayo Add mayonaise
+     *      -h, --help Output usage information
      */
     public function outputHelp() {
+        echo "Usage: ".$this->getName()." [options]";
+        echo PHP_EOL.PHP_EOL;
+        echo "Options:".PHP_EOL;
         foreach($this->options as $option) {
-            var_dump($option);
+            echo "\t".$option['help'].PHP_EOL;
         }
+        echo "\t".$this->helpOption.PHP_EOL;
     }
 }

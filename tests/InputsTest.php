@@ -112,4 +112,23 @@ class InputsTest extends PHPUnit_Framework_TestCase {
 
         $cli->parse();
     }
+
+    /**
+     * Test help text
+     */
+    function testHelp() {
+        $cli = new Inputs(array(
+          'cli.php',
+          '-p',
+          '--help'
+        ));
+
+        $cli->option('-p, --peppers', 'Add peppers');
+        $cli->option('-c, --cheese [type]', 'Add a cheese');
+        $cli->option('-m, --mayo', 'Add mayonaise');
+
+        $cli->parse();
+
+        $this->expectOutputString("Usage: cli.php [options]\n\nOptions:\n\t-p, --peppers Add peppers\n\t-c, --cheese [type] Add a cheese\n\t-m, --mayo Add mayonaise\n\t-h, --help Output usage information\n");
+    }
 }
