@@ -47,6 +47,7 @@ class CliTest extends PHPUnit_Framework_TestCase {
    * Test parse
    */
   function testParse() {
+    // php cli.php -p --cheese cheddar
     $cli = new Cli(array(
       'cli.php',
       '-p',
@@ -71,11 +72,11 @@ class CliTest extends PHPUnit_Framework_TestCase {
   function testParsingNonOptions() {
     $cli = new Cli(array(
       'cli.php',
+      'extra',
       '-p',
+      '-b',
       '--cheese',
       'cheddar',
-      'extra',
-      '-b',
       'info'
     ));
     $cli->option('-p, --peppers', 'Add peppers');
