@@ -23,6 +23,15 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Test exec fail
+     * @expectedException Exception
+     * @expectedExceptionMessage exit 1 failed with exit code 1
+     */
+    function testExecFail() {
+        Utils::exec('exit 1');
+    }
+
+    /**
      * Test JSON decode
      */
     function testJSONDecode() {
