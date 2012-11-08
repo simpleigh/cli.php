@@ -22,7 +22,7 @@ class Utils {
 
         passthru($cmd, $return_var);
 
-        if($return_content) $output = ob_get_contents();
+        if($return_content) $output = trim(ob_get_contents());
         if($return_content) ob_end_clean();
 
         // if command exits with a code other than 0 throw exception

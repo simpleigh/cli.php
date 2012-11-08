@@ -19,7 +19,7 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
      */
     function testExecReturn() {
         $output = Utils::exec('echo hello!', true);
-        $this->assertEquals("hello!\n", $output);
+        $this->assertEquals("hello!", $output);
     }
 
     /**
