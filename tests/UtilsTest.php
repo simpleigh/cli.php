@@ -21,4 +21,25 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         $output = Utils::exec('echo hello!', true);
         $this->assertEquals("hello!\n", $output);
     }
+
+    /**
+     * Test JSON decode
+     */
+    function testJSONDecode() {
+        $json = '{"hello": "world"}';
+        $output = Utils::jsonDecode($json);
+
+        $this->assertArrayHasKey('hello', $output);
+        $this->assertEquals('world', $output['hello']);
+    }
+
+    /**
+     * Test JSON decode on malformed JSON
+     * @expectedException Exception
+     * @expectedExceptionMessage Syntax error, malformed JSON
+     */
+    function testJSONDecodeMalformed() {
+        $json = '{hello: "world}';
+        $output = Utils::jsonDecode($json);
+    }
 }
