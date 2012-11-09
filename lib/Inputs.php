@@ -3,6 +3,21 @@
  * Inputs class
  *
  * Parses command line inputs
+ *
+ * TODO:
+ *  * Add parameters input (matters in which order):
+ *  e.g.
+ *  $cli->param('client', 'Client name', true);
+ *  $cli->param('locale', 'Client locale');
+ *
+ *  then:
+ *  $cli->get(0); // client
+ *  $cli->get('client'); // client
+ *  $cli->get(1); // locale
+ *  $cli->get('locale'); // locale
+ *
+ *  help:
+ *      {{command}} <client> [locale] [options]
  */
 class Inputs {
     protected $options = array();
