@@ -12,7 +12,7 @@ class LogTest extends PHPUnit_Framework_TestCase {
     function testLog() {
         // Simple output
         Logger::log('Hello');
-        $this->expectOutputString("Hello\n");
+        $this->expectOutputString("[".date('Y-m-d H:i:s')."] [log] [LogTest.php] Hello\n");
     }
 
     /**
@@ -21,6 +21,10 @@ class LogTest extends PHPUnit_Framework_TestCase {
     function testColourLog() {
         Logger::log('Hello', array('colour' => 'red'));
         // check for red output
-        $this->expectOutputString("\033[0;31mHello\033[0m\n");
+        $string = "\033[0;31m";
+        $string .= "[".date('Y-m-d H:i:s')."] [log] [LogTest.php] Hello";
+        $string .= "\033[0m";
+        $string .= "\n";
+        $this->expectOutputString($string);
     }
 }
