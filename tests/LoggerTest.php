@@ -3,7 +3,7 @@
  * Log test
  */
 require_once "PHPUnit/Autoload.php";
-require_once "lib/Log.php";
+require_once "lib/Logger.php";
 
 class LogTest extends PHPUnit_Framework_TestCase {
     /**
