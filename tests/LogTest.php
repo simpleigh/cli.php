@@ -27,4 +27,18 @@ class LogTest extends PHPUnit_Framework_TestCase {
         $string .= "\n";
         $this->expectOutputString($string);
     }
+
+    /**
+     * Test custom format
+     */
+    function testCustomFormat() {
+        Logger::log('Hello', array(
+            'format' => "[%s] [%s] %s",
+            'inputs' => array(
+                'log',
+                'LogTest.php'
+            )
+        ));
+        $this->expectOutputString("[log] [LogTest.php] Hello\n");
+    }
 }
