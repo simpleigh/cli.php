@@ -40,6 +40,17 @@ class Logger {
     }
 
     /**
+     * Output message
+     */
+    public static function out($message, $colour = false) {
+        if($colour) {
+            echo Colours::string($message, $colour).PHP_EOL;
+        } else {
+            echo $message.PHP_EOL;
+        }
+    }
+
+    /**
      * Get timestamp
      */
     public static function getTimestamp() {

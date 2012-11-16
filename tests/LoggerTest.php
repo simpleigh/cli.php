@@ -12,7 +12,7 @@ class LogTest extends PHPUnit_Framework_TestCase {
     function testLog() {
         // Simple output
         Logger::log('Hello');
-        $this->expectOutputString("[".date('Y-m-d H:i:s')."] [log] [LogTest.php] Hello\n");
+        $this->expectOutputString("[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] Hello\n");
     }
 
     /**
@@ -22,7 +22,7 @@ class LogTest extends PHPUnit_Framework_TestCase {
         Logger::log('Hello', array('colour' => 'red'));
         // check for red output
         $string = "\033[0;31m";
-        $string .= "[".date('Y-m-d H:i:s')."] [log] [LogTest.php] Hello";
+        $string .= "[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] Hello";
         $string .= "\033[0m";
         $string .= "\n";
         $this->expectOutputString($string);
@@ -36,9 +36,29 @@ class LogTest extends PHPUnit_Framework_TestCase {
             'format' => "[%s] [%s] %s",
             'inputs' => array(
                 'log',
-                'LogTest.php'
+                'LoggerTest.php'
             )
         ));
-        $this->expectOutputString("[log] [LogTest.php] Hello\n");
+        $this->expectOutputString("[log] [LoggerTest.php] Hello\n");
+    }
+
+    /**
+     * Test out
+     */
+    function testOut() {
+        Logger::out('Hi');
+        $this->expectOutputString("Hi\n");
+    }
+
+    /**
+     * Test out colour
+     */
+    function testOutColour() {
+        Logger::out('Hi', 'red');
+        $string = "\033[0;31m";
+        $string .= "Hi";
+        $string .= "\033[0m";
+        $string .= "\n";
+        $this->expectOutputString($string);
     }
 }
