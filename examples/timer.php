@@ -17,6 +17,13 @@ $clock->start('block2');
 sleep(3);
 $clock->stop('block2');
 
+// Averages
+for($i = 0; $i < 5; $i++) {
+    $clock->startAvg('loop');
+    sleep(1);
+    $clock->stopAvg('loop');
+}
+
 $clock->stop('total');
 
 $clock->report();
