@@ -151,7 +151,7 @@ class Timer {
             throw new Exception('Average block '.$blocks.' not defined');
         }
         echo "    $block";
-        echo " (".$this->avgs[$block]['count'].")";
+        echo " [".$this->avgs[$block]['count']."]";
         echo " (".$this->avgs[$block]['start-line']."-".$this->avgs[$block]['stop-line'].")";
         echo ": ";
         $time = $this->avgs[$block]['total'] / $this->avgs[$block]['count'];
