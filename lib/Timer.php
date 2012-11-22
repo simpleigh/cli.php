@@ -38,6 +38,7 @@ class Timer {
         }
 
         $this->blocks[$block]['start'] = microtime(true);
+        $this->blocks[$block]['start-line'] = $this->getLineNumber();
     }
 
     /**
@@ -51,6 +52,7 @@ class Timer {
         }
 
         $this->blocks[$block]['stop'] = microtime(true);
+        $this->blocks[$block]['stop-line'] = $this->getLineNumber();
     }
 
     /**
@@ -77,10 +79,20 @@ class Timer {
         if(!array_key_exists($block, $this->blocks)) {
             throw new Exception('Block '.$blocks.' not defined');
         }
-        echo "    $block: ";
+        echo "    $block";
+        echo " (".$this->blocks[$block]['start-line']."-".$this->blocks[$block]['stop-line'].")";
+        echo ": ";
         $time = $this->blocks[$block]['stop'] - $this->blocks[$block]['start'];
         echo round($time, 4);
         echo ' seconds';
         echo PHP_EOL;
+    }
+
+    /**
+     * Private: Get line number where command was called from
+     */
+    private function getLineNumber() {
+        $bg = debug_backtrace();
+        return $bg[1]['line'];
     }
 }
