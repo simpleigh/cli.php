@@ -60,6 +60,8 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         Utils::checkEnv(array(
             'FOO'
         ));
+
+        Utils::checkEnv('FOO');
     }
 
     /**
@@ -71,15 +73,6 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         Utils::checkEnv(array(
             'BAR'
         ));
-    }
-
-    /**
-     * Test checkEnv when input is not an array
-     * @expectedException Exception
-     * @expectedExceptionMessage $variables is not an array
-     */
-    function testCheckEnvArray() {
-        Utils::checkEnv('BAR');
     }
 
     /**

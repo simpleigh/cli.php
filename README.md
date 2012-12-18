@@ -2,6 +2,26 @@
 
 A small collection of php classes to help with CLI utilities. 
 
+## Installation 
+
+Add this to your `composer.json`
+    
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@code.fusepump.com:cli.php"
+        }
+    ],
+    "require": {
+        "fusepump/cli.php": "dev-master"
+    }
+
+Then run:
+
+    composer install
+
+And add `require 'vendor/autoload.php'` to your php file;
+
 ## Inputs.php
 
 Parse command line inputs
@@ -9,7 +29,7 @@ Parse command line inputs
 __Example:__
 
 	<?php
-	require('lib/Inputs.php');
+	require 'lib/Inputs.php';
 	$cli = new Inputs($argv);
 	
 	$cli->option('-h, --ham', 'Add ham');
@@ -59,3 +79,37 @@ __Example:__
 
 __N.B.__ Confirm returns true on a "y" or "yes". It returns false otherwise. 
 
+## Utils
+
+Collection of utility functions.
+
+### exec
+
+Execute a shell command. Throws an exception if command fails.
+
+__Example:__
+
+    <?php
+    require 'lib/Utils.php';
+
+    Utils::exec('echo hello!'); // => hello!
+    
+    $value = Utils::exec('echo hello!', true);
+    echo $value; // => hello!
+
+### jsonDecode
+
+Decode JSON string into an associative array. Throw exception with information if fails to parse JSON string.
+
+__Example:__
+    
+    <?php
+    require 'lib/Utils.php';
+
+    $json = Utils::jsonDecode('{"hello": "world"}');
+    
+    echo $json['hello']; // => world
+    
+### checkEnv
+
+Check 
