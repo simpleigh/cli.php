@@ -27,10 +27,15 @@ And add `require 'vendor/autoload.php'` to your php file;
 * [Inputs](#inputs)
 * [Logger](#logger)
 * [Utils](#utils)
+
     [exec](#exec)
+    
     [jsonDecode](#jsonDecode)
+    
     [checkEnv](#checkenv)
+    
     [pregMatchArray](#pregmatcharray)
+    
 * [Timer](#timer)
 
 - - -
