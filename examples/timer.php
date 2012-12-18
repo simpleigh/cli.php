@@ -31,6 +31,11 @@ $clock->report();
 
 $clock->report('total');
 
+$block1 = $clock->get('block1');
+print_r($block1);
+$avg = $clock->getAvg('loop');
+print_r($avg);
+
 /**
  * sleep2
  *
