@@ -40,6 +40,19 @@ class Logger {
     }
 
     /**
+     * Output error message
+     */
+    public static function error($message, $options = array()) {
+        $options['colour'] = 'red';
+        $options['inputs'] = array(
+            self::getTimestamp(),
+            'error',
+            self::getFilename()
+        );
+        self::log($message, $options);
+    }
+
+    /**
      * Output message
      */
     public static function out($message, $colour = false) {

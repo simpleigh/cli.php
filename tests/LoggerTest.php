@@ -61,4 +61,17 @@ class LogTest extends PHPUnit_Framework_TestCase {
         $string .= "\n";
         $this->expectOutputString($string);
     }
+
+    /**
+     * Test output error
+     */
+    function testError() {
+        Logger::error('Error');
+        // check for red output
+        $string = "\033[0;31m";
+        $string .= "[".date('Y-m-d H:i:s')."] [error] [LoggerTest.php] Error";
+        $string .= "\033[0m";
+        $string .= "\n";
+        $this->expectOutputString($string);
+    }
 }
