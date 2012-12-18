@@ -134,11 +134,12 @@ class Timer {
         if(!array_key_exists($block, $this->blocks)) {
             throw new Exception('Block '.$blocks.' not defined');
         }
+        $this->finishBlock($block);
+
         echo "    $block";
         echo " (".$this->blocks[$block]['start-line']."-".$this->blocks[$block]['stop-line'].")";
         echo ": ";
-        $time = $this->blocks[$block]['stop'] - $this->blocks[$block]['start'];
-        echo round($time, 4);
+        echo round($this->blocks[$block]['total'], 4);
         echo ' seconds';
         echo PHP_EOL;
     }
@@ -150,12 +151,13 @@ class Timer {
         if(!array_key_exists($block, $this->avgs)) {
             throw new Exception('Average block '.$blocks.' not defined');
         }
+        $this->finishAvgBlock($block);
+
         echo "    $block";
         echo " [".$this->avgs[$block]['count']."]";
         echo " (".$this->avgs[$block]['start-line']."-".$this->avgs[$block]['stop-line'].")";
         echo ": ";
-        $time = $this->avgs[$block]['total'] / $this->avgs[$block]['count'];
-        echo round($time, 4);
+        echo round($this->avgs[$block]['avg'], 4);
         echo ' seconds';
         echo PHP_EOL;
     }
@@ -166,5 +168,67 @@ class Timer {
     private function getLineNumber() {
         $bg = debug_backtrace();
         return $bg[1]['line'];
+    }
+
+    /**
+     * Public: get block info
+     *
+     * $block - identifier
+     *
+     * Returns associative array
+     */
+    public function get($block) {
+        if(!array_key_exists($block, $this->blocks)) {
+            throw new Exception('Block '.$blocks.' not defined');
+        }
+
+        $this->finishBlock($block);
+
+        return $this->blocks[$block];
+    }
+
+    /**
+     * Public: get average block info
+     *
+     * $block - identifier
+     *
+     * Returns associative array
+     */
+    public function getAvg($block) {
+        if(!array_key_exists($block, $this->avgs)) {
+            throw new Exception('Average block '.$blocks.' not defined');
+        }
+
+        $this->finishAvgBlock($block);
+
+        return $this->avgs[$block];
+    }
+
+    /**
+     * Private: Finish block
+     * 
+     * $block - identifier
+     */
+    private function finishBlock($block) {
+        if(!array_key_exists($block, $this->blocks)) {
+            throw new Exception('Block '.$blocks.' not defined');
+        }
+        $this->blocks[$block]['total'] = $this->blocks[$block]['stop'] - $this->blocks[$block]['start'];
+
+        return $this->blocks[$block];
+    }
+
+    /**
+     * Private: Finish average block
+     * 
+     * $block - identifier
+     */
+    private function finishAvgBlock($block) {
+        if(!array_key_exists($block, $this->avgs)) {
+            throw new Exception('Average block '.$blocks.' not defined');
+        }
+        $this->avgs[$block]['avg'] = $this->avgs[$block]['total'] / $this->avgs[$block]['count'];
+
+        return $this->avgs[$block];
     }
 }
