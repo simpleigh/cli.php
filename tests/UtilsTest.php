@@ -51,4 +51,35 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         $json = '{hello: "world}';
         $output = Utils::jsonDecode($json);
     }
+
+    /**
+     * Test checkEnv 
+     */
+    function testCheckEnv() {
+        putenv("FOO=BAR");
+        Utils::checkEnv(array(
+            'FOO'
+        ));
+    }
+
+    /**
+     * Test checkEnv when variable is not set
+     * @expectedException Exception
+     * @expectedExceptionMessage Variable BAR is not set
+     */
+    function testCheckEnvException() {
+        Utils::checkEnv(array(
+            'BAR'
+        ));
+    }
+
+    /**
+     * Test checkEnv when input is not an array
+     * @expectedException Exception
+     * @expectedExceptionMessage $variables is not an array
+     */
+    function testCheckEnvArray() {
+        Utils::checkEnv('BAR');
+    }
+
 }

@@ -71,4 +71,23 @@ class Utils {
 
         return $json;
     }
+
+    /**
+     * Check env
+     *
+     * $variables - array of variables to check
+     *
+     * Throws exception if variable not set
+     */
+    public static function checkEnv($variables) {
+        if(!is_array($variables)) {
+            throw new Exception('$variables is not an array');
+        }
+
+        foreach($variables as $variable) {
+            if(!getenv($variable)) {
+                throw new Exception('Variable '.$variable.' is not set');
+            }
+        }
+    }
 }
