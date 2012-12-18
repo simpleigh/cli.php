@@ -82,4 +82,40 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         Utils::checkEnv('BAR');
     }
 
+    /**
+     * Test pregMatchArray
+     */
+    function testPregMatchArray() {
+        $result = Utils::pregMatchArray(array(
+            '/foo/i',
+            '/bar/i'
+        ), 'foo');
+
+        $this->assertTrue($result);
+
+        $result = Utils::pregMatchArray(array(
+            '/foo/i',
+            '/bar/i'
+        ), 'nothing');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test pregMatchArray when input is not an array
+     * @expectedException Exception
+     * @expectedExceptionMessage $patterns is not an array
+     */
+    function testPregMatchNotArray() {
+        Utils::pregMatchArray('/foo/i', 'foo');
+    }
+
+    /**
+     * Test pregMatchArray when input is not a string
+     * @expectedException Exception
+     * @expectedExceptionMessage $subject is not a string
+     */
+    function testPregMatchNotString() {
+        Utils::pregMatchArray(array('/foo/i'), array('foo'));
+    }
 }

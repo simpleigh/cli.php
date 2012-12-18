@@ -90,4 +90,31 @@ class Utils {
             }
         }
     }
+
+    /**
+     * Preg match array
+     * Match subject to an array of indexes 
+     *
+     * $patterns - array of regex patterns
+     * $subject - string to test patterns on
+     *
+     * Returns true if found. false otherwise.
+     */
+    public static function pregMatchArray($patterns, $subject) {
+        if(!is_array($patterns)) {
+            throw new Exception('$patterns is not an array');
+        }
+
+        if(!is_string($subject)) {
+            throw new Exception('$subject is not a string');
+        }
+
+        foreach($patterns as $pattern) {
+            if(preg_match($pattern, $subject)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
