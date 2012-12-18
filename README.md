@@ -22,6 +22,13 @@ Then run:
 
 And add `require 'vendor/autoload.php'` to your php file;
 
+## Contents
+
+* [Inputs](#inputs)
+* [Logger](#logger)
+* [Utils](#utils)
+* [Timer](#timer)
+
 - - -
 
 ## Inputs
