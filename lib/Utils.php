@@ -91,11 +91,13 @@ class Utils {
                 }
             }
         }
+
+        return true;
     }
 
     /**
      * Preg match array
-     * Match subject to an array of indexes 
+     * Match subject to an array of regex patterns 
      *
      * $patterns - array of regex patterns
      * $subject - string to test patterns on

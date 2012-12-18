@@ -112,4 +112,31 @@ __Example:__
     
 ### checkEnv
 
-Check 
+Check that an environmental variable is set. Can take a single variable or an
+array of variables to set. Throws an Exception if the variable is not set. 
+
+__Example:__
+    <?php
+    require 'lib/Utils.php';
+    
+    Utils::checkEnv(array(
+        'FOO',
+        'BAR'
+    ));
+    
+    Utils::checkEnv('FOO');
+
+### pregMatchArray
+
+Match subject to an array of regex patterns. Returns true if found a match.
+False if not.
+
+__Example:__
+    <?php
+    require 'lib/Utils.php';
+    
+    Utils::pregMatchArray(array(
+        '/foo/i',
+        '/bar/i'
+    ), 'foo'); // => true
+    
