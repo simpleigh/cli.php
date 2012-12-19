@@ -22,6 +22,12 @@ Then run:
 
 And add `require 'vendor/autoload.php'` to your php file;
 
+## Tests 
+
+To run tests:
+    
+    phpunit tests/
+
 ## Contents
 
 * [Inputs](#inputs)
