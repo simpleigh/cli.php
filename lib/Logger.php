@@ -6,7 +6,7 @@
 require dirname(__FILE__).'/Colours.php';
 
 class Logger {
-    public static $format = "[%s] [%s] [%s] %s";
+    public static $format = "[%s] [%s] [%s] [%d] %s";
     public static $inputs = array();
 
     /**
@@ -19,7 +19,8 @@ class Logger {
             $inputs = array(
                 self::getTimestamp(),
                 'log',
-                self::getFilename()
+                self::getFilename(),
+                self::getLineNumber()
             );
         }
 
@@ -47,7 +48,8 @@ class Logger {
         $options['inputs'] = array(
             self::getTimestamp(),
             'error',
-            self::getFilename()
+            self::getFilename(),
+            self::getLineNumber()
         );
         self::log($message, $options);
     }
@@ -85,6 +87,19 @@ class Logger {
         $file = $bt[1];
         if(isset($file['file'])) {
             return basename($file['file']);
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Get linenumber of where the log is called from
+     */
+    private static function getLineNumber() {
+        $bt = debug_backtrace();
+        $file = $bt[1];
+        if(isset($file['line'])) {
+            return basename($file['line']);
         } else {
             return '';
         }
