@@ -47,56 +47,56 @@ Parse command line inputs
 
 __Example:__
 
-	<?php
-	require 'lib/Inputs.php';
-	$cli = new Inputs($argv);
-	
-	$cli->option('-h, --ham', 'Add ham');
-	$cli->option('-m, --mayo', 'Add mayonaise');
-	$cli->option('-c, --cheese [type]', 'Add a cheese');
-	$cli->option('-b, --bread [type]', 'Type of bread', true); // required input
-	
+    <?php
+    require 'lib/Inputs.php';
+    $cli = new Inputs($argv);
+    
+    $cli->option('-h, --ham', 'Add ham');
+    $cli->option('-m, --mayo', 'Add mayonaise');
+    $cli->option('-c, --cheese [type]', 'Add a cheese');
+    $cli->option('-b, --bread [type]', 'Type of bread', true); // required input
+    
     $cli->param('when', 'When do you want the sandwhich (now, tomorrow or never)', true);
 
-	if(!$cli->parse()) {
-		exit(1);	
-	}
-	
+    if(!$cli->parse()) {
+        exit(1);    
+    }
+    
     echo "You ordered a sandwich ".$cli->get('when')." with: \n";
-	if($cli->get('-h')) echo " - Ham \n";
-	if($cli->get('-m')) echo " - Mayonaise \n";
-	if($cli->get('--cheese')) echo ' - '.$cli->get('--cheese')." cheese \n";
-	echo 'On '.$cli->get('-b')." bread \n";
+    if($cli->get('-h')) echo " - Ham \n";
+    if($cli->get('-m')) echo " - Mayonaise \n";
+    if($cli->get('--cheese')) echo ' - '.$cli->get('--cheese')." cheese \n";
+    echo 'On '.$cli->get('-b')." bread \n";
 
 __Run:__
 
-	php cli.php now -h -c cheddar --bread white
+    php cli.php now -h -c cheddar --bread white
 
 __Gives:__
-	
-	You ordered a sandwich now with:
-	 - Ham
-	 - Cheddar cheese
-	On white bread
+    
+    You ordered a sandwich now with:
+     - Ham
+     - Cheddar cheese
+    On white bread
 
 ### Prompts
 
 Prompt the user for information.
 
 __Example:__
-	
-	<?php
-	require('lib/Inputs.php');
-	$cli = new Inputs();
+    
+    <?php
+    require('lib/Inputs.php');
+    $cli = new Inputs();
 
-	$username = $cli->prompt('Username: ');
-	echo 'Got '.$username."\n";
+    $username = $cli->prompt('Username: ');
+    echo 'Got '.$username."\n";
 
-	$password = $cli->prompt('Password (not a real one): ', true);
-	echo 'Got '.$password."\n";
+    $password = $cli->prompt('Password (not a real one): ', true);
+    echo 'Got '.$password."\n";
 
-	$confirm = $cli->confirm('Confirm? ');
-	echo var_dump($confirm);
+    $confirm = $cli->confirm('Confirm? ');
+    echo var_dump($confirm);
 
 __N.B.__ Confirm returns true on a "y" or "yes". It returns false otherwise. 
 
