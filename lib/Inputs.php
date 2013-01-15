@@ -4,23 +4,10 @@
  *
  * Parses command line inputs
  *
- * TODO:
- *  * Add parameters input (matters in which order):
- *  e.g.
- *  $cli->param('client', 'Client name', true);
- *  $cli->param('locale', 'Client locale');
- *
- *  then:
- *  $cli->get(0); // client
- *  $cli->get('client'); // client
- *  $cli->get(1); // locale
- *  $cli->get('locale'); // locale
- *
- *  help:
- *      {{command}} <client> [locale] [options]
  */
 class Inputs {
     protected $options = array();
+    protected $params = array(); // array of parameters
     protected $inputs = array();
     protected $pinputs = array(); // processed inputs
     protected $required = array();
@@ -54,7 +41,7 @@ class Inputs {
      *    $cli->get('-p'); // true/false
      *    $cli->get('-c'); // cheese type
      */
-    public function option($flags, $help, $required = NULL) {
+    public function option($flags, $help, $required = false) {
         $options = $this->parseOption($flags);
 
         $options['help'] = $flags.' '.$help;
@@ -62,6 +49,33 @@ class Inputs {
         if($required) $options['required'] = true;
 
         $this->setOption($options['short'], $options);
+    }
+
+    /**
+     * Add param
+     *
+     * $param - name of param
+     * $help - help text
+     * $required - flag
+     *
+     * Example:
+     *      $cli->param('client', 'Name of client', true);
+     *      $cli->get('client');
+     * 
+     */
+    public function param($param, $help, $required = false) {
+        $options = array();
+
+        $options['name'] = $param;
+        if($required) {
+            $options['help'] = '<'.$param.'> '.$help;
+            $options['required'] = true;
+        } else {
+            $options['help'] = '['.$param.'] '.$help;
+            $options['required'] = false;
+        }
+
+        $this->setParam($options);
     }
 
     /**
@@ -89,9 +103,9 @@ class Inputs {
      * Process inputs
      */
     public function parse() {
+        // check if a help flag is set
         try {
-            // check if a help flag is set
-            $key = $this->checkInputs('-h', '--help', $this->inputs);
+            $key = $this->checkInputs('-h', '--help');
             if($key !== false) {
                 throw new Exception('Help flag is set');
             }
@@ -103,7 +117,7 @@ class Inputs {
         // loop through options and see if they are in the inputs
         foreach($this->options as $option => $info) {
             // if option is in inputs
-            $key = $this->checkInputs($info['short'], $info['long'], $this->inputs);
+            $key = $this->checkInputs($info['short'], $info['long']);
             if($key === false) {
                 $this->pinputs[$info['short']] = false;
                 $this->pinputs[$info['long']] = false;
@@ -122,6 +136,18 @@ class Inputs {
             }
         }
 
+        // Loop through each of the remaining inputs and assign them to their 
+        // params
+        $count = 0; // count because cannot rely on key value of inputs
+        foreach($this->inputs as $key => $input) {
+            // If parameter for input exists
+            if(array_key_exists($count, $this->params)) {
+                $this->pinputs[$this->params[$count]['name']] = $input;
+                unset($this->inputs[$key]); // remove input from inputs
+            }
+            $count++;
+        }
+       
         // loop through remaining flags and insert them at their indexes
         if(!empty($this->inputs)) {
             $this->inputs = array_values($this->inputs);
@@ -142,7 +168,7 @@ class Inputs {
     /**
      * Check input for flag
      */
-    private function checkInputs($short, $long, $inputs) {
+    private function checkInputs($short, $long) {
         $key = array_search($short, $this->inputs);
         if($key === false) {
             $key = array_search($long, $this->inputs);
@@ -171,13 +197,29 @@ class Inputs {
                 }
             }
         }
+
+        // Loop through all params
+        foreach($this->params as $param) {
+            if(array_key_exists('required', $param) && $param['required'] == true) {
+                if(!array_key_exists($param['name'], $this->pinputs)) {
+                    throw new Exception('"'.$param['help'].'" is required');
+                }
+            }
+        }
     }
 
     /**
-     * Get options
+     * Set option
      */
     public function setOption($name, $options) {
         $this->options[$name] = $options;
+    }
+
+    /**
+     * Set param
+     */
+    public function setParam($options) {
+        $this->params[] = $options;
     }
 
     /**
@@ -185,6 +227,13 @@ class Inputs {
      */
     public function getOptions() {
         return $this->options;
+    }
+
+    /**
+     * Get params
+     */
+    public function getParams() {
+        return $this->params;
     }
 
     /**
@@ -259,7 +308,7 @@ class Inputs {
      *
      * Format:
      *
-     * Usage: {{name}} [options]
+     * Usage: {{name}} <param> [options]
      *
      * Options:
      *      -p, --peppers Add peppers
@@ -268,8 +317,25 @@ class Inputs {
      *      -h, --help Output usage information
      */
     public function outputHelp() {
-        echo "Usage: ".$this->getName()." [options]";
+        echo "Usage: ".$this->getName()." ";
+        if(!empty($this->params)) {
+            foreach($this->params as $param) {
+                if($param['required'] == true) {
+                    echo '<'.$param['name'].'> ';
+                } else {
+                    echo '['.$param['name'].'] ';
+                }
+            }
+        }
+        echo "[options]";
         echo PHP_EOL.PHP_EOL;
+
+        echo "Parameters:".PHP_EOL;
+        foreach($this->params as $param) {
+            echo "\t".$param['help'].PHP_EOL;
+        }
+        echo PHP_EOL;
+
         echo "Options:".PHP_EOL;
         foreach($this->options as $option) {
             $output = "\t".$option['help'];

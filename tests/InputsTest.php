@@ -114,13 +114,47 @@ class InputsTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Test params
+     */
+    function testParams() {
+        $cli = new Inputs(array(
+          'cli.php',
+          'test',
+          'uk'
+        ));
+        $cli->param('client', 'Name of client', true);
+        $cli->param('locale', 'Client locale');
+        $cli->parse();
+
+        // expect parse to throw an exception that input is not defined
+        $this->assertEquals("test", $cli->get('client'));
+        $this->assertEquals("uk", $cli->get('locale'));
+    }
+
+    /**
+     * Test required
+     */
+    function testRequiredParam() {
+        $cli = new Inputs(array(
+          'cli.php'
+        ));
+
+        $cli->param('client', 'Specify client', true);
+
+        // expect parse to throw an exception that input is not defined
+        $this->expectOutputString("\"<client> Specify client\" is required\n");
+
+        $cli->parse();
+    }
+
+    /**
      * Test help text
      */
     function testHelp() {
         $cli = new Inputs(array(
-          'cli.php',
-          '-p',
-          '--help'
+            'cli.php',
+            '-p',
+            '--help'
         ));
 
         $cli->option('-p, --peppers', 'Add peppers');
@@ -128,8 +162,11 @@ class InputsTest extends PHPUnit_Framework_TestCase {
         $cli->option('-m, --mayo', 'Add mayonaise');
         $cli->option('-b, --bread [type]', 'Type of bread', true);
 
+        $cli->param('client', 'Name of client', true);
+        $cli->param('locale', 'Client locale');
+
         $cli->parse();
 
-        $this->expectOutputString("Usage: cli.php [options]\n\nOptions:\n\t-p, --peppers Add peppers\n\t-c, --cheese [type] Add a cheese\n\t-m, --mayo Add mayonaise\n\t-b, --bread [type] Type of bread [required]\n\t-h, --help Output usage information\n");
+        $this->expectOutputString("Usage: cli.php <client> [locale] [options]\n\nParameters:\n\t<client> Name of client\n\t[locale] Client locale\n\nOptions:\n\t-p, --peppers Add peppers\n\t-c, --cheese [type] Add a cheese\n\t-m, --mayo Add mayonaise\n\t-b, --bread [type] Type of bread [required]\n\t-h, --help Output usage information\n");
     }
 }
