@@ -158,7 +158,8 @@ class Inputs {
         try {
             $this->checkRequired();
         } catch(Exception $e) {
-            echo $e->getMessage().PHP_EOL;
+            echo $e->getMessage().PHP_EOL.PHP_EOL;
+            $this->outputHelp(true);
             return false;
         }
 
@@ -187,25 +188,26 @@ class Inputs {
      * If a required option is not provided then throw and exception
      */
     private function checkRequired() {
+        // Loop through all params
+        foreach($this->params as $param) {
+            if(array_key_exists('required', $param) && $param['required'] == true) {
+                if(!array_key_exists($param['name'], $this->pinputs)) {
+                    throw new Exception('Parameter "'.$param['name'].'" is required');
+                }
+            }
+        }
+ 
         // Loop through all options
         foreach($this->options as $key => $option) {
             // if option is required
             if(array_key_exists('required', $option) && $option['required'] == true) {
                 // check that it is defined in pinputs
                 if($this->pinputs[$option['short']] == false) {
-                    throw new Exception($option['help'].' is required');
+                    throw new Exception('Option "'.$option['help'].'" is required');
                 }
             }
         }
 
-        // Loop through all params
-        foreach($this->params as $param) {
-            if(array_key_exists('required', $param) && $param['required'] == true) {
-                if(!array_key_exists($param['name'], $this->pinputs)) {
-                    throw new Exception('"'.$param['help'].'" is required');
-                }
-            }
-        }
     }
 
     /**
@@ -306,6 +308,8 @@ class Inputs {
     /**
      * Output help text
      *
+     * $short - Short output text
+     *
      * Format:
      *
      * Usage: {{name}} <param> [options]
@@ -316,7 +320,7 @@ class Inputs {
      *      -m, --mayo Add mayonaise
      *      -h, --help Output usage information
      */
-    public function outputHelp() {
+    public function outputHelp($short = false) {
         echo "Usage: ".$this->getName()." ";
         if(!empty($this->params)) {
             foreach($this->params as $param) {
@@ -328,23 +332,28 @@ class Inputs {
             }
         }
         echo "[options]";
-        echo PHP_EOL.PHP_EOL;
 
-        echo "Parameters:".PHP_EOL;
-        foreach($this->params as $param) {
-            echo "\t".$param['help'].PHP_EOL;
-        }
-        echo PHP_EOL;
+        if(!$short) {
+            echo PHP_EOL.PHP_EOL;
 
-        echo "Options:".PHP_EOL;
-        foreach($this->options as $option) {
-            $output = "\t".$option['help'];
-            if(array_key_exists('required', $option) && $option['required'] == true) {
-                $output .= " [required]";
+            echo "Parameters:".PHP_EOL;
+            foreach($this->params as $param) {
+                echo "\t".$param['help'].PHP_EOL;
             }
-            $output .= PHP_EOL;
-            echo $output;
+            echo PHP_EOL;
+
+            echo "Options:".PHP_EOL;
+            foreach($this->options as $option) {
+                $output = "\t".$option['help'];
+                if(array_key_exists('required', $option) && $option['required'] == true) {
+                    $output .= " [required]";
+                }
+                $output .= PHP_EOL;
+                echo $output;
+            }
+            echo "\t".$this->helpOption.PHP_EOL;
+        } else {
+            echo PHP_EOL;
         }
-        echo "\t".$this->helpOption.PHP_EOL;
     }
 }
