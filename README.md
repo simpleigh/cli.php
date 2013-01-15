@@ -56,11 +56,13 @@ __Example:__
 	$cli->option('-c, --cheese [type]', 'Add a cheese');
 	$cli->option('-b, --bread [type]', 'Type of bread', true); // required input
 	
+    $cli->param('when', 'When do you want the sandwhich (now, tomorrow or never)', true);
+
 	if(!$cli->parse()) {
 		exit(1);	
 	}
 	
-	echo "You ordered a sandwich with: \n";
+    echo "You ordered a sandwich ".$cli->get('when')." with: \n";
 	if($cli->get('-h')) echo " - Ham \n";
 	if($cli->get('-m')) echo " - Mayonaise \n";
 	if($cli->get('--cheese')) echo ' - '.$cli->get('--cheese')." cheese \n";
@@ -68,11 +70,11 @@ __Example:__
 
 __Run:__
 
-	php cli.php -h -c cheddar --bread white
+	php cli.php now -h -c cheddar --bread white
 
 __Gives:__
 	
-	You ordered a sandwich with:
+	You ordered a sandwich now with:
 	 - Ham
 	 - Cheddar cheese
 	On white bread
