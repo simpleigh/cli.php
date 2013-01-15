@@ -336,11 +336,13 @@ class Inputs {
         if(!$short) {
             echo PHP_EOL.PHP_EOL;
 
-            echo "Parameters:".PHP_EOL;
-            foreach($this->params as $param) {
-                echo "\t".$param['help'].PHP_EOL;
+            if(!empty($this->params)) {
+                echo "Parameters:".PHP_EOL;
+                foreach($this->params as $param) {
+                    echo "\t".$param['help'].PHP_EOL;
+                }
+                echo PHP_EOL;
             }
-            echo PHP_EOL;
 
             echo "Options:".PHP_EOL;
             foreach($this->options as $option) {
