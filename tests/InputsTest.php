@@ -108,7 +108,7 @@ class InputsTest extends PHPUnit_Framework_TestCase {
         $cli->option('-b, --bread [type]', 'Type of bread', true);
 
         // expect parse to throw an exception that input is not defined
-        $this->expectOutputString("-b, --bread [type] Type of bread is required\n");
+        $this->expectOutputString("Option \"-b, --bread [type] Type of bread\" is required\n\nUsage: cli.php [options]\n");
 
         $cli->parse();
     }
@@ -142,7 +142,7 @@ class InputsTest extends PHPUnit_Framework_TestCase {
         $cli->param('client', 'Specify client', true);
 
         // expect parse to throw an exception that input is not defined
-        $this->expectOutputString("\"<client> Specify client\" is required\n");
+        $this->expectOutputString("Parameter \"client\" is required\n\nUsage: cli.php <client> [options]\n");
 
         $cli->parse();
     }
