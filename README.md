@@ -6,8 +6,10 @@ A small collection of php classes to help with CLI utilities.
 
 Add this to your `composer.json`
     
-    "require": {
-        "fusepump/cli.php": "dev-master"
+    {
+        "require": {
+            "fusepump/cli.php": "0.2.0"
+        }
     }
 
 Then run:
@@ -42,7 +44,6 @@ Parse command line inputs
 __Example:__
 
     <?php
-    require 'lib/Inputs.php';
     $cli = new Inputs($argv);
     
     $cli->option('-h, --ham', 'Add ham');
@@ -80,7 +81,6 @@ Prompt the user for information.
 __Example:__
     
     <?php
-    require('lib/Inputs.php');
     $cli = new Inputs();
 
     $username = $cli->prompt('Username: ');
@@ -136,7 +136,6 @@ Execute a shell command. Throws an exception if command fails.
 __Example:__
 
     <?php
-    require 'lib/Utils.php';
 
     Utils::exec('echo hello!'); // => hello!
     
@@ -150,7 +149,6 @@ Decode JSON string into an associative array. Throw exception with information i
 __Example:__
     
     <?php
-    require 'lib/Utils.php';
 
     $json = Utils::jsonDecode('{"hello": "world"}');
     
@@ -163,7 +161,6 @@ array of variables to set. Throws an Exception if the variable is not set.
 
 __Example:__
     <?php
-    require 'lib/Utils.php';
     
     Utils::checkEnv(array(
         'FOO',
@@ -179,7 +176,6 @@ False if not.
 
 __Example:__
     <?php
-    require 'lib/Utils.php';
     
     Utils::pregMatchArray(array(
         '/foo/i',
@@ -195,7 +191,6 @@ Time blocks of code.
 __Example:__
 
     <?php
-    require 'lib/Timer.php';
     
     $clock = new Timer();
 
