@@ -6,12 +6,6 @@ A small collection of php classes to help with CLI utilities.
 
 Add this to your `composer.json`
     
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@code.fusepump.com:cli.php"
-        }
-    ],
     "require": {
         "fusepump/cli.php": "dev-master"
     }
