@@ -102,29 +102,31 @@ class Timer {
      * $block - optionally specify which block to print
      */
     public function report($block = NULL) {
-        echo 'Timing report:'.PHP_EOL;
+        $output = "";
+        $output .= 'Timing report:'.PHP_EOL;
         if($block === NULL) {
             foreach($this->blocks as $key => $block) {
-                $this->printBlock($key);
+                $output .= $this->printBlock($key);
             }
 
-            echo PHP_EOL;
-            echo 'Averages:'.PHP_EOL;
+            $output .= PHP_EOL;
+            $output .= 'Averages:'.PHP_EOL;
             foreach($this->avgs as $key => $block) {
-                $this->printAvgBlock($key);
+                $output .= $this->printAvgBlock($key);
             }
         } else {
             try {
-                $this->printBlock($block);
+                $output .= $this->printBlock($block);
             } catch (Exception $e) {
                 try {
-                    $this->printAvgBlock($block);
+                    $output .= $this->printAvgBlock($block);
                 } catch (Exception $e) {
                     throw new Exception('Block does not exist in either average or normal blocks');
                 }
             }
         }
-        echo PHP_EOL;
+        $output .= PHP_EOL;
+        return $output;
     }
 
     /**
@@ -136,12 +138,15 @@ class Timer {
         }
         $this->finishBlock($block);
 
-        echo "    $block";
-        echo " (".$this->blocks[$block]['start-line']."-".$this->blocks[$block]['stop-line'].")";
-        echo ": ";
-        echo round($this->blocks[$block]['total'], 4);
-        echo ' seconds';
-        echo PHP_EOL;
+        $output = "";
+        $output .= "    $block";
+        $output .= " (".$this->blocks[$block]['start-line']."-".$this->blocks[$block]['stop-line'].")";
+        $output .= ": ";
+        $output .= round($this->blocks[$block]['total'], 4);
+        $output .= ' seconds';
+        $output .= PHP_EOL;
+
+        return $output;
     }
 
     /**
@@ -153,13 +158,16 @@ class Timer {
         }
         $this->finishAvgBlock($block);
 
-        echo "    $block";
-        echo " [".$this->avgs[$block]['count']."]";
-        echo " (".$this->avgs[$block]['start-line']."-".$this->avgs[$block]['stop-line'].")";
-        echo ": ";
-        echo round($this->avgs[$block]['avg'], 4);
-        echo ' seconds';
-        echo PHP_EOL;
+        $output = "";
+        $output .= "    $block";
+        $output .= " [".$this->avgs[$block]['count']."]";
+        $output .= " (".$this->avgs[$block]['start-line']."-".$this->avgs[$block]['stop-line'].")";
+        $output .= ": ";
+        $output .= round($this->avgs[$block]['avg'], 4);
+        $output .= ' seconds';
+        $output .= PHP_EOL;
+
+        return $output;
     }
 
     /**

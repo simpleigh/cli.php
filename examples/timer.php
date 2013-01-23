@@ -27,9 +27,9 @@ for($i = 0; $i < 5; $i++) {
 
 $clock->stop('total');
 
-$clock->report();
+echo $clock->report();
 
-$clock->report('total');
+echo $clock->report('total');
 
 $block1 = $clock->get('block1');
 print_r($block1);
