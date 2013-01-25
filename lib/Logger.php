@@ -8,6 +8,10 @@ require dirname(__FILE__).'/Colours.php';
 class Logger {
     public static $format = "[%s] [%s] [%s] [%d] %s";
     public static $inputs = array();
+    public static $outputs = array(
+        'STDOUT' => 'php://output',
+        'STDERR' => 'php://stderr'
+    );
 
     /**
      * Output log message
@@ -24,6 +28,10 @@ class Logger {
             );
         }
 
+        if(!array_key_exists('output', $options)) {
+            $options['output'] = 'STDOUT';
+        }
+
         if(array_key_exists('format', $options)) {
             array_unshift($inputs, $options['format']);
         } else {
@@ -34,9 +42,9 @@ class Logger {
 
         $logmessage = self::getLogMessage($inputs);
         if(array_key_exists('colour', $options) && !empty($options['colour'])) {
-            echo Colours::string($logmessage, $options['colour']).PHP_EOL;
+            self::out($logmessage, $options['colour'], $options['output']);
         } else {
-            echo $logmessage.PHP_EOL;
+            self::out($logmessage, false, $options['output']);
         }
     }
 
@@ -51,17 +59,24 @@ class Logger {
             self::getFilename(),
             self::getLineNumber()
         );
+        if(!array_key_exists('output', $options)) {
+            $options['output'] = 'STDERR';
+        }
         self::log($message, $options);
     }
 
     /**
      * Output message
      */
-    public static function out($message, $colour = false) {
+    public static function out($message, $colour = false, $output = 'STDOUT') {
+        if(array_key_exists($output, self::$outputs)) {
+            $output = self::$outputs[$output];
+        }
+
         if($colour) {
-            echo Colours::string($message, $colour).PHP_EOL;
+            file_put_contents($output, Colours::string($message, $colour).PHP_EOL, FILE_APPEND);
         } else {
-            echo $message.PHP_EOL;
+            file_put_contents($output, $message.PHP_EOL, FILE_APPEND);
         }
     }
 

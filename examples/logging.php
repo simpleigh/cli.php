@@ -16,3 +16,8 @@ Logger::error('This is an error'); // => [2012-11-15 18:12:34] [error] [logging.
 Logger::out('Plain output'); // => Plain output
 Logger::out('Plain output with colour!', 'red'); // => Plain output with colour!
 
+// Log to a file
+Logger::log('Log to a file', array('output' => 'output.log'));
+Logger::error('Log an error to a file', array('output' => 'output.err'));
+Logger::out('Log some text to a file', false, 'output.log');
+
