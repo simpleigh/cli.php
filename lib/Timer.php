@@ -72,6 +72,14 @@ class Timer {
         if(!isset($this->avgs[$block]['start-line'])) {
             $this->avgs[$block]['start-line'] = $this->getLineNumber();
         }
+
+        // Initialise max and min time
+        if(!isset($this->avgs[$block]['max-time'])) {
+            $this->avgs[$block]['max-time'] = 0;
+        }
+        if(!isset($this->avgs[$block]['min-time'])) {
+            $this->avgs[$block]['min-time'] = 9999;
+        }
     }
 
     /**
@@ -93,6 +101,15 @@ class Timer {
         $this->avgs[$block]['count']++; // increment count
 
         $time = $this->avgs[$block]['stop'] - $this->avgs[$block]['start'];
+
+        // Check max and min time
+        if($this->avgs[$block]['max-time'] < $time) {
+            $this->avgs[$block]['max-time'] = $time;
+        } 
+        if($this->avgs[$block]['min-time'] > $time) {
+            $this->avgs[$block]['min-time'] = $time;
+        } 
+
         $this->avgs[$block]['total'] = $this->avgs[$block]['total'] + $time;
     }
 
@@ -166,6 +183,10 @@ class Timer {
         $output .= round($this->avgs[$block]['avg'], 4);
         $output .= ' seconds';
         $output .= PHP_EOL;
+
+        // Output max and min time
+        $output .= "        max time: ".round($this->avgs[$block]['max-time'], 4).PHP_EOL;
+        $output .= "        min time: ".round($this->avgs[$block]['min-time'], 4).PHP_EOL;
 
         return $output;
     }
