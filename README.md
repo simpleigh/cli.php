@@ -168,7 +168,7 @@ array of variables to set. Throws an Exception if the variable is not set.
 
 __Example:__
 
-```
+```php
 Utils::checkEnv(array(
     'FOO',
     'BAR'
