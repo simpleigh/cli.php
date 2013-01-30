@@ -267,3 +267,15 @@ Average report format:
 
     {{block name}} [{{number of iterations]}] ({{lines block wraps}}): {{time taken}} seconds
     
+You can also enable or disable the clock to save resources:
+
+```php
+$clock = new Timer(false); // disable in the constructor
+
+$clock->disable(); // disable after class has been instantiated
+
+$clock->enable(); // enable class again
+
+$clock->getEnabled(); // => true
+```
+
