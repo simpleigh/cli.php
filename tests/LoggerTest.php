@@ -13,7 +13,7 @@ class LogTest extends PHPUnit_Framework_TestCase {
     function testLog() {
         // Simple output
         Logger::log('Hello');
-        $this->expectOutputString("[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] [14] Hello\n");
+        $this->expectOutputString("[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] [" . (__LINE__ - 1) . "] Hello\n");
     }
 
     /**
