@@ -1,4 +1,7 @@
 <?php
+
+namespace FusePump\Cli;
+
 /**
  * Public: Utility class for useful static functions
  */
@@ -27,7 +30,7 @@ class Utils {
 
         // if command exits with a code other than 0 throw exception
         if($return_var > 0) {
-            throw new Exception($cmd.' failed with exit code '.$return_var);
+            throw new \Exception($cmd.' failed with exit code '.$return_var);
         }
 
         return $output;
@@ -49,22 +52,22 @@ class Utils {
         if($json == NULL) {
             switch (json_last_error()) {
                 case JSON_ERROR_DEPTH:
-                    throw new Exception('Maximum stack depth exceeded');
+                    throw new \Exception('Maximum stack depth exceeded');
                     break;
                 case JSON_ERROR_STATE_MISMATCH:
-                    throw new Exception('Underflow or the modes mismatch');
+                    throw new \Exception('Underflow or the modes mismatch');
                     break;
                 case JSON_ERROR_CTRL_CHAR:
-                    throw new Exception('Unexpected control character found');
+                    throw new \Exception('Unexpected control character found');
                     break;
                 case JSON_ERROR_SYNTAX:
-                    throw new Exception('Syntax error, malformed JSON');
+                    throw new \Exception('Syntax error, malformed JSON');
                     break;
                 case JSON_ERROR_UTF8:
-                    throw new Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
+                    throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
                     break;
                 default:
-                    throw new Exception('Unknown error');
+                    throw new \Exception('Unknown error');
                     break;
             }
         }
@@ -82,12 +85,12 @@ class Utils {
     public static function checkEnv($variables) {
         if(!is_array($variables)) {
             if(!getenv($variables)) {
-                throw new Exception('Variable '.$variable.' is not set');
+                throw new \Exception('Variable '.$variable.' is not set');
             }
         } else {
             foreach($variables as $variable) {
                 if(!getenv($variable)) {
-                    throw new Exception('Variable '.$variable.' is not set');
+                    throw new \Exception('Variable '.$variable.' is not set');
                 }
             }
         }
@@ -106,11 +109,11 @@ class Utils {
      */
     public static function pregMatchArray($patterns, $subject) {
         if(!is_array($patterns)) {
-            throw new Exception('$patterns is not an array');
+            throw new \Exception('$patterns is not an array');
         }
 
         if(!is_string($subject)) {
-            throw new Exception('$subject is not a string');
+            throw new \Exception('$subject is not a string');
         }
 
         foreach($patterns as $pattern) {

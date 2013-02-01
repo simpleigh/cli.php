@@ -2,8 +2,9 @@
 /**
  * Utils test
  */
-require_once "PHPUnit/Autoload.php";
 require_once "lib/Utils.php";
+
+use FusePump\Cli\Utils as Utils;
 
 class UtilsTest extends PHPUnit_Framework_TestCase {
     /**

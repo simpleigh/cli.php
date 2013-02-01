@@ -1,4 +1,7 @@
 <?php
+
+namespace FusePump\Cli;
+
 /**
  * Inputs class
  *
@@ -107,9 +110,9 @@ class Inputs {
         try {
             $key = $this->checkInputs('-h', '--help');
             if($key !== false) {
-                throw new Exception('Help flag is set');
+                throw new \Exception('Help flag is set');
             }
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             $this->outputHelp();
             return false;
         }
@@ -157,7 +160,7 @@ class Inputs {
         // check required inputs
         try {
             $this->checkRequired();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             echo $e->getMessage().PHP_EOL.PHP_EOL;
             $this->outputHelp(true);
             return false;
@@ -192,7 +195,7 @@ class Inputs {
         foreach($this->params as $param) {
             if(array_key_exists('required', $param) && $param['required'] == true) {
                 if(!array_key_exists($param['name'], $this->pinputs)) {
-                    throw new Exception('Parameter "'.$param['name'].'" is required');
+                    throw new \Exception('Parameter "'.$param['name'].'" is required');
                 }
             }
         }
@@ -203,7 +206,7 @@ class Inputs {
             if(array_key_exists('required', $option) && $option['required'] == true) {
                 // check that it is defined in pinputs
                 if($this->pinputs[$option['short']] == false) {
-                    throw new Exception('Option "'.$option['help'].'" is required');
+                    throw new \Exception('Option "'.$option['help'].'" is required');
                 }
             }
         }
@@ -257,7 +260,7 @@ class Inputs {
      */
     public function get($flag) {
         if(!array_key_exists($flag, $this->pinputs)) {
-          throw new Exception('Input '.$flag.' cannot be found');
+          throw new \Exception('Input '.$flag.' cannot be found');
         } else {
           return $this->pinputs[$flag];
         }

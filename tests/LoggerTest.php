@@ -2,8 +2,9 @@
 /**
  * Log test
  */
-require_once "PHPUnit/Autoload.php";
 require_once "lib/Logger.php";
+
+use FusePump\Cli\Logger as Logger;
 
 class LogTest extends PHPUnit_Framework_TestCase {
     /**

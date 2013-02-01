@@ -1,10 +1,12 @@
 <?php
-/**
- * Log class
- */
+
+namespace FusePump\Cli;
 
 require dirname(__FILE__).'/Colours.php';
 
+/**
+ * Log class
+ */
 class Logger {
     public static $format = "[%s] [%s] [%s] [%d] %s";
     public static $inputs = array();

@@ -1,4 +1,7 @@
 <?php
+
+namespace FusePump\Cli;
+
 /**
  * CLI colours
  */
