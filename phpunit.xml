@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit colors="true"
+         strict="true"
+         verbose="true">
+
+    <logging>
+        <log type="coverage-html"
+             target="tests_coverage"
+             charset="UTF-8"
+             yui="true"
+             highlight="true"
+        />
+    </logging>
+
+    <testsuite name="php.cli">>
+        <directory>tests</directory>
+    </testsuite>
+</phpunit>
