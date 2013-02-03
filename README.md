@@ -8,7 +8,7 @@ Add this to your `composer.json`
     
     {
         "require": {
-            "fusepump/cli.php": "0.2.0"
+            "fusepump/cli.php": "0.3.0"
         }
     }
 
