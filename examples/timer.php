@@ -3,7 +3,9 @@
  * Timing examples
  */
 
-require dirname(__FILE__).'/../lib/Timer.php';
+require dirname(__FILE__).'/../lib/FusePump/Cli/Timer.php';
+
+use FusePump\Cli\Timer as Timer;
 
 $clock = new Timer();
 

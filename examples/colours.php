@@ -3,7 +3,10 @@
  * Output all the colours available
  */
 
-require dirname(__FILE__).'/../lib/Logger.php';
+require dirname(__FILE__).'/../lib/FusePump/Cli/Logger.php';
+
+use FusePump\Cli\Logger as Logger;
+use FusePump\Cli\Colours as Colours;
 
 $colours = Colours::getForegroundColors();
 

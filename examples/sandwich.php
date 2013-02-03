@@ -2,7 +2,10 @@
 /**
  * Sandwich maker
  */
-require(dirname(__FILE__).'/../lib/Inputs.php');
+require(dirname(__FILE__).'/../lib/FusePump/Cli/Inputs.php');
+
+use FusePump\Cli\Inputs as Inputs;
+
 $cli = new Inputs($argv);
 
 $cli->option('-h, --ham', 'Add ham');

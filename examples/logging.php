@@ -3,7 +3,9 @@
  * Logging examples
  */
 
-require dirname(__FILE__)."/../lib/Logger.php";
+require dirname(__FILE__)."/../lib/FusePump/Cli/Logger.php";
+
+use FusePump\Cli\Logger as Logger;
 
 Logger::log('Hello!'); // => [2012-11-15 18:12:34] [log] [logging.php] Hello!
 Logger::log('This is red!', array('colour' => 'red')); // => [2012-11-15 18:12:34] [log] [logging.php] This is red!
