@@ -2,7 +2,7 @@
 /**
  * Log test
  */
-require_once "lib/Logger.php";
+require_once "lib/FusePump/Cli/Logger.php";
 
 use FusePump\Cli\Logger as Logger;
 

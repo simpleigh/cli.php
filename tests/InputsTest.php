@@ -2,7 +2,7 @@
 /**
  * Inputs test
  */
-require_once "lib/Inputs.php";
+require_once "lib/FusePump/Cli/Inputs.php";
 
 use FusePump\Cli\Inputs as Inputs;
 

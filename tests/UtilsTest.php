@@ -2,7 +2,7 @@
 /**
  * Utils test
  */
-require_once "lib/Utils.php";
+require_once "lib/FusePump/Cli/Utils.php";
 
 use FusePump\Cli\Utils as Utils;
 
