@@ -43,6 +43,8 @@ Parse command line inputs
 
 __Example:__
 ```php
+use FusePump\Cli\Inputs as Inputs;
+
 $cli = new Inputs($argv);
 
 $cli->option('-h, --ham', 'Add ham');
@@ -85,6 +87,8 @@ Prompt the user for information.
 __Example:__
     
 ```php
+use FusePump\Cli\Inputs as Inputs;
+
 $cli = new Inputs();
 
 $username = $cli->prompt('Username: ');
@@ -108,6 +112,8 @@ Logger class with colour and timestamps.
 __Example:__
     
 ```php
+use FusePump\Cli\Logger as Logger;
+
 Logger::log('Hello!'); 
 // => [2012-11-15 18:12:34] [log] [logging.php] Hello!
 
@@ -143,6 +149,8 @@ Execute a shell command. Throws an exception if command fails.
 __Example:__
 
 ```php
+use FusePump\Cli\Utils as Utils;
+
 Utils::exec('echo hello!'); // => hello!
 
 $value = Utils::exec('echo hello!', true);
@@ -156,7 +164,7 @@ Decode JSON string into an associative array. Throw exception with information i
 __Example:__
 
 ```php
-$json = Utils::jsonDecode('{"hello": "world"}');
+$json = FusePump\Cli\Utils::jsonDecode('{"hello": "world"}');
 
 echo $json['hello']; // => world
 ```
@@ -169,6 +177,8 @@ array of variables to set. Throws an Exception if the variable is not set.
 __Example:__
 
 ```php
+use FusePump\Cli\Utils as Utils;
+
 Utils::checkEnv(array(
     'FOO',
     'BAR'
@@ -185,6 +195,8 @@ False if not.
 __Example:__
 
 ```php
+use FusePump\Cli\Utils as Utils;
+
 Utils::pregMatchArray(array(
     '/foo/i',
     '/bar/i'
@@ -200,6 +212,8 @@ Time blocks of code.
 __Example:__
 
 ```php
+use FusePump\Cli\Timer as Timer;
+
 $clock = new Timer();
 
 $clock->start('total');
