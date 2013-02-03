@@ -63,6 +63,9 @@ class UtilsTest extends PHPUnit_Framework_TestCase {
         ));
 
         Utils::checkEnv('FOO');
+
+        // Shouldn't throw an exception
+        $this->assertTrue(true);
     }
 
     /**

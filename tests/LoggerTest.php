@@ -21,9 +21,10 @@ class LogTest extends PHPUnit_Framework_TestCase {
      */
     function testColourLog() {
         Logger::log('Hello', array('colour' => 'red'));
+        $line = __LINE__ - 1;
         // check for red output
         $string = "\033[0;31m";
-        $string .= "[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] [22] Hello";
+        $string .= "[".date('Y-m-d H:i:s')."] [log] [LoggerTest.php] [$line] Hello";
         $string .= "\033[0m";
         $string .= "\n";
         $this->expectOutputString($string);
