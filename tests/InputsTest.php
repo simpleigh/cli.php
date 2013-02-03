@@ -2,8 +2,9 @@
 /**
  * Inputs test
  */
-require_once "PHPUnit/Autoload.php";
 require_once "lib/Inputs.php";
+
+use FusePump\Cli\Inputs as Inputs;
 
 class InputsTest extends PHPUnit_Framework_TestCase {
     /**

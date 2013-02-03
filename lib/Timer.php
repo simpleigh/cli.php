@@ -1,4 +1,7 @@
 <?php
+
+namespace FusePump\Cli;
+
 /**
  * Timer class
  *
@@ -17,7 +20,8 @@
  *  // block2: 15 seconds
  *
  */
-class Timer {
+class Timer
+{
     protected $blocks = array(); // array to store timing blocks
     protected $avgs = array(); // avg array
     protected $enabled; // enabled flag
@@ -25,28 +29,32 @@ class Timer {
     /**
      * Constructor
      */
-    function __construct($enabled = true) {
+    public function __construct($enabled = true)
+    {
         $this->enabled = $enabled;
     }
 
     /**
      * Set enabled
      */
-    public function enable() {
+    public function enable()
+    {
         $this->enabled = true;
     }
 
     /**
      * Set disabled
      */
-    public function disable() {
+    public function disable()
+    {
         $this->enabled = false;
     }
 
     /**
      * Get enabled
      */
-    public function getEnabled() {
+    public function getEnabled()
+    {
         return $this->enabled;
     }
     
@@ -55,9 +63,10 @@ class Timer {
      *
      * $block - key to identify block
      */
-    public function start($block) {
-        if($this->enabled) {
-            if(!isset($this->blocks[$block])) {
+    public function start($block)
+    {
+        if ($this->enabled) {
+            if (!isset($this->blocks[$block])) {
                 $this->blocks[$block] = array();
             }
 
@@ -71,10 +80,11 @@ class Timer {
      *
      * $block - key to identify block
      */
-    public function stop($block) {
-        if($this->enabled) {
-            if(!isset($this->blocks[$block])) {
-                throw new Exception('Block '.$block.' has not been started!');
+    public function stop($block)
+    {
+        if ($this->enabled) {
+            if (!isset($this->blocks[$block])) {
+                throw new \Exception('Block '.$block.' has not been started!');
             }
 
             $this->blocks[$block]['stop'] = microtime(true);
@@ -87,24 +97,25 @@ class Timer {
      *
      * $block - identifier
      */
-    public function startAvg($block) {
-        if($this->enabled) {
-            if(!isset($this->avgs[$block])) {
+    public function startAvg($block)
+    {
+        if ($this->enabled) {
+            if (!isset($this->avgs[$block])) {
                 $this->avgs[$block] = array();
                 $this->avgs[$block]['count'] = 0;
                 $this->avgs[$block]['total'] = 0;
             }
 
             $this->avgs[$block]['start'] = microtime(true);
-            if(!isset($this->avgs[$block]['start-line'])) {
+            if (!isset($this->avgs[$block]['start-line'])) {
                 $this->avgs[$block]['start-line'] = $this->getLineNumber();
             }
 
             // Initialise max and min time
-            if(!isset($this->avgs[$block]['max-time'])) {
+            if (!isset($this->avgs[$block]['max-time'])) {
                 $this->avgs[$block]['max-time'] = 0;
             }
-            if(!isset($this->avgs[$block]['min-time'])) {
+            if (!isset($this->avgs[$block]['min-time'])) {
                 $this->avgs[$block]['min-time'] = 9999;
             }
         }
@@ -115,14 +126,15 @@ class Timer {
      *
      * $block
      */
-    public function stopAvg($block) {
-        if($this->enabled) {
-            if(!isset($this->avgs[$block])) {
-                throw new Exception('Average block '.$block.' has not been started!');
+    public function stopAvg($block)
+    {
+        if ($this->enabled) {
+            if (!isset($this->avgs[$block])) {
+                throw new \Exception('Average block '.$block.' has not been started!');
             }
 
             $this->avgs[$block]['stop'] = microtime(true);
-            if(!isset($this->avgs[$block]['stop-line'])) {
+            if (!isset($this->avgs[$block]['stop-line'])) {
                 $this->avgs[$block]['stop-line'] = $this->getLineNumber();
             }
 
@@ -132,12 +144,12 @@ class Timer {
             $time = $this->avgs[$block]['stop'] - $this->avgs[$block]['start'];
 
             // Check max and min time
-            if($this->avgs[$block]['max-time'] < $time) {
+            if ($this->avgs[$block]['max-time'] < $time) {
                 $this->avgs[$block]['max-time'] = $time;
-            } 
-            if($this->avgs[$block]['min-time'] > $time) {
+            }
+            if ($this->avgs[$block]['min-time'] > $time) {
                 $this->avgs[$block]['min-time'] = $time;
-            } 
+            }
 
             $this->avgs[$block]['total'] = $this->avgs[$block]['total'] + $time;
         }
@@ -148,18 +160,19 @@ class Timer {
      *
      * $block - optionally specify which block to print
      */
-    public function report($block = NULL) {
-        if($this->enabled) {
+    public function report($block = null)
+    {
+        if ($this->enabled) {
             $output = "";
             $output .= 'Timing report:'.PHP_EOL;
-            if($block === NULL) {
-                foreach($this->blocks as $key => $block) {
+            if ($block === null) {
+                foreach ($this->blocks as $key => $block) {
                     $output .= $this->printBlock($key);
                 }
 
                 $output .= PHP_EOL;
                 $output .= 'Averages:'.PHP_EOL;
-                foreach($this->avgs as $key => $block) {
+                foreach ($this->avgs as $key => $block) {
                     $output .= $this->printAvgBlock($key);
                 }
             } else {
@@ -169,7 +182,7 @@ class Timer {
                     try {
                         $output .= $this->printAvgBlock($block);
                     } catch (Exception $e) {
-                        throw new Exception('Block does not exist in either average or normal blocks');
+                        throw new \Exception('Block does not exist in either average or normal blocks');
                     }
                 }
             }
@@ -181,9 +194,10 @@ class Timer {
     /**
      * Private: Print block
      */
-    private function printBlock($block) {
-        if(!array_key_exists($block, $this->blocks)) {
-            throw new Exception('Block '.$blocks.' not defined');
+    private function printBlock($block)
+    {
+        if (!array_key_exists($block, $this->blocks)) {
+            throw new \Exception('Block '.$blocks.' not defined');
         }
         $this->finishBlock($block);
 
@@ -201,9 +215,10 @@ class Timer {
     /**
      * Private: Print average block
      */
-    private function printAvgBlock($block) {
-        if(!array_key_exists($block, $this->avgs)) {
-            throw new Exception('Average block '.$blocks.' not defined');
+    private function printAvgBlock($block)
+    {
+        if (!array_key_exists($block, $this->avgs)) {
+            throw new \Exception('Average block '.$blocks.' not defined');
         }
         $this->finishAvgBlock($block);
 
@@ -226,7 +241,8 @@ class Timer {
     /**
      * Private: Get line number where command was called from
      */
-    private function getLineNumber() {
+    private function getLineNumber()
+    {
         $bg = debug_backtrace();
         return $bg[1]['line'];
     }
@@ -238,10 +254,11 @@ class Timer {
      *
      * Returns associative array
      */
-    public function get($block) {
-        if($this->enabled) {
-            if(!array_key_exists($block, $this->blocks)) {
-                throw new Exception('Block '.$blocks.' not defined');
+    public function get($block)
+    {
+        if ($this->enabled) {
+            if (!array_key_exists($block, $this->blocks)) {
+                throw new \Exception('Block '.$blocks.' not defined');
             }
 
             $this->finishBlock($block);
@@ -257,10 +274,11 @@ class Timer {
      *
      * Returns associative array
      */
-    public function getAvg($block) {
-        if($this->enabled) {
-            if(!array_key_exists($block, $this->avgs)) {
-                throw new Exception('Average block '.$blocks.' not defined');
+    public function getAvg($block)
+    {
+        if ($this->enabled) {
+            if (!array_key_exists($block, $this->avgs)) {
+                throw new \Exception('Average block '.$blocks.' not defined');
             }
 
             $this->finishAvgBlock($block);
@@ -274,9 +292,10 @@ class Timer {
      * 
      * $block - identifier
      */
-    private function finishBlock($block) {
-        if(!array_key_exists($block, $this->blocks)) {
-            throw new Exception('Block '.$blocks.' not defined');
+    private function finishBlock($block)
+    {
+        if (!array_key_exists($block, $this->blocks)) {
+            throw new \Exception('Block '.$blocks.' not defined');
         }
         $this->blocks[$block]['total'] = $this->blocks[$block]['stop'] - $this->blocks[$block]['start'];
 
@@ -288,9 +307,10 @@ class Timer {
      * 
      * $block - identifier
      */
-    private function finishAvgBlock($block) {
-        if(!array_key_exists($block, $this->avgs)) {
-            throw new Exception('Average block '.$blocks.' not defined');
+    private function finishAvgBlock($block)
+    {
+        if (!array_key_exists($block, $this->avgs)) {
+            throw new \Exception('Average block '.$blocks.' not defined');
         }
         $this->avgs[$block]['avg'] = $this->avgs[$block]['total'] / $this->avgs[$block]['count'];
 
