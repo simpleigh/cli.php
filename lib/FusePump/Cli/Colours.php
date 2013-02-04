@@ -48,20 +48,20 @@ class Colours
         // Check if given foreground color found
         if (isset(self::$foreground_colors[$foreground_color])) {
             $colored_string = $colored_string
-                            . '\033['
+                            . "\033["
                             . self::$foreground_colors[$foreground_color]
                             . 'm';
         }
         // Check if given background color found
         if (isset(self::$background_colors[$background_color])) {
             $colored_string = $colored_string
-                            . '\033['
+                            . "\033["
                             . self::$background_colors[$background_color]
                             . 'm';
         }
 
         // Add string and end coloring
-        $colored_string = $colored_string . $string . '\033[0m';
+        $colored_string = $colored_string . $string . "\033[0m";
 
         return $colored_string;
     }
