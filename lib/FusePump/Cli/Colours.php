@@ -65,19 +65,59 @@ class Colours
     {
         $coloured_string = "";
 
-        // Check if given foreground colour found
-        if (isset(self::$foreground_colours[$foreground_colour])) {
-            $coloured_string .= "\033[" . self::$foreground_colours[$foreground_colour] . "m";
+        // Check if given foreground color found
+        if (isset(self::$foreground_colors[$foreground_color])) {
+            $colored_string .= self::getForegroundCode($foreground_color);
         }
-        // Check if given background colour found
-        if (isset(self::$background_colours[$background_colour])) {
-            $coloured_string .= "\033[" . self::$background_colours[$background_colour] . "m";
+        // Check if given background color found
+        if (isset(self::$background_colors[$background_color])) {
+            $colored_string .= self::getBackgroundCode($background_color);
         }
 
-        // Add string and end colouring
-        $coloured_string .=  $string . "\033[0m";
+        // Add string and end coloring
+        $colored_string .=  $string . self::getResetCode();
 
         return $coloured_string;
+    }
+
+
+    /**
+     * Returns the code for a foreground colour.
+     * @param string $foregroundColour Foreground colour to set.
+     * @return string Foreground colour code.
+     * @throws \Exception if the colour code is invalid.
+     */
+    public static function getForegroundCode($foregroundColour)
+    {
+        if (!isset(self::$foreground_colors[$foregroundColour])) {
+            throw new \Exception('Invalid foreground colour.');
+        }
+        return "\033[" . self::$foreground_colors[$foregroundColour] . 'm';
+    }
+
+
+    /**
+     * Returns the code for a background colour.
+     * @param string $backgroundColour Background colour to set.
+     * @return string Background colour code.
+     * @throws \Exception if the colour code is invalid.
+     */
+    public static function getBackgroundCode($backgroundColour)
+    {
+        if (!isset(self::$background_colors[$backgroundColour])) {
+            throw new \Exception('Invalid background colour.');
+        }
+        return "\033[" . self::$background_colors[$backgroundColour] . 'm';
+    }
+
+
+    /**
+     * Returns the code to reset colouring.
+     * @return string Reset colour code.
+     */
+    public static function getResetCode()
+    {
+        return "\033[0m";
     }
 
 
