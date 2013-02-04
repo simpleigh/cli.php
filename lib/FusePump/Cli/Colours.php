@@ -7,7 +7,7 @@ namespace FusePump\Cli;
  */
 class Colours
 {
-    private static $foreground_colors = array(
+    private static $foreground_colours = array(
         'black' => '0;30',
         'dark_gray' => '1;30',
         'red' => '0;31',
@@ -26,7 +26,7 @@ class Colours
         'bold_gray' => '0;37'
     );
 
-    private static $background_colors = array(
+    private static $background_colours = array(
         'black' => '40',
         'red' => '41',
         'magenta' => '45',
@@ -37,35 +37,35 @@ class Colours
         'light_gray' => '47'
     );
 
-    // Returns colored string
-    public static function string($string, $foreground_color = null, $background_color = null)
+    // Returns coloured string
+    public static function string($string, $foreground_colour = null, $background_colour = null)
     {
-        $colored_string = "";
+        $coloured_string = "";
 
-        // Check if given foreground color found
-        if (isset(self::$foreground_colors[$foreground_color])) {
-            $colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . "m";
+        // Check if given foreground colour found
+        if (isset(self::$foreground_colours[$foreground_colour])) {
+            $coloured_string .= "\033[" . self::$foreground_colours[$foreground_colour] . "m";
         }
-        // Check if given background color found
-        if (isset(self::$background_colors[$background_color])) {
-            $colored_string .= "\033[" . self::$background_colors[$background_color] . "m";
+        // Check if given background colour found
+        if (isset(self::$background_colours[$background_colour])) {
+            $coloured_string .= "\033[" . self::$background_colours[$background_colour] . "m";
         }
 
-        // Add string and end coloring
-        $colored_string .=  $string . "\033[0m";
+        // Add string and end colouring
+        $coloured_string .=  $string . "\033[0m";
 
-        return $colored_string;
+        return $coloured_string;
     }
 
-    // Returns all foreground color names
-    public static function getForegroundColors()
+    // Returns all foreground colour names
+    public static function getForegroundColours()
     {
-        return array_keys(self::$foreground_colors);
+        return array_keys(self::$foreground_colours);
     }
 
-    // Returns all background color names
-    public static function getBackgroundColors()
+    // Returns all background colour names
+    public static function getBackgroundColours()
     {
-        return array_keys(self::$background_colors);
+        return array_keys(self::$background_colours);
     }
 }
