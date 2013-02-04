@@ -1,4 +1,11 @@
 <?php
+/**
+ * CLI colour class.
+ * @author Jonathan Kim <jonathan.kim@fusepump.com>
+ * @author Leigh Simpson <leigh.simpson@fusepump.com>
+ * @copyright Copyright (c) 2012 FusePump Ltd.
+ * @license Licensed under the MIT license, see LICENSE.md for details
+ */
 
 namespace FusePump\Cli;
 
@@ -7,6 +14,10 @@ namespace FusePump\Cli;
  */
 class Colours
 {
+    /**
+     * Mapping of foreground colours to control codes.
+     * @var array[string]
+     */
     private static $foreground_colors = array(
         'black' => '0;30',
         'dark_gray' => '1;30',
@@ -26,6 +37,11 @@ class Colours
         'bold_gray' => '0;37'
     );
 
+
+    /**
+     * Mapping of background colours to control codes.
+     * @var array[string]
+     */
     private static $background_colors = array(
         'black' => '40',
         'red' => '41',
@@ -37,7 +53,14 @@ class Colours
         'light_gray' => '47'
     );
 
-    // Returns colored string
+
+    /**
+     * Adds colouring control codes to a string.
+     * @param string $string String to format.
+     * @param string $foreground_colour Optional foreground colour for string.
+     * @param string $background_colour Optional background colour for string.
+     * @return string Formatted string.
+     */
     public static function string($string, $foreground_color = null, $background_color = null)
     {
         $colored_string = "";
@@ -57,13 +80,21 @@ class Colours
         return $colored_string;
     }
 
-    // Returns all foreground color names
+
+    /**
+     * Returns the list of foreground colour names.
+     * @return array[string]
+     */
     public static function getForegroundColors()
     {
         return array_keys(self::$foreground_colors);
     }
 
-    // Returns all background color names
+
+    /**
+     * Returns the list of background colour names.
+     * @return array[string]
+     */
     public static function getBackgroundColors()
     {
         return array_keys(self::$background_colors);
