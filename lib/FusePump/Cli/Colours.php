@@ -65,17 +65,17 @@ class Colours
     {
         $coloured_string = "";
 
-        // Check if given foreground color found
-        if (isset(self::$foreground_colors[$foreground_color])) {
-            $colored_string .= self::getForegroundCode($foreground_color);
+        // Check if given foreground colour found
+        if (isset(self::$foreground_colours[$foreground_colour])) {
+            $coloured_string .= self::getForegroundCode($foreground_colour);
         }
-        // Check if given background color found
-        if (isset(self::$background_colors[$background_color])) {
-            $colored_string .= self::getBackgroundCode($background_color);
+        // Check if given background colour found
+        if (isset(self::$background_colours[$background_colour])) {
+            $coloured_string .= self::getBackgroundCode($background_colour);
         }
 
-        // Add string and end coloring
-        $colored_string .=  $string . self::getResetCode();
+        // Add string and end colouring
+        $coloured_string .=  $string . self::getResetCode();
 
         return $coloured_string;
     }
@@ -89,10 +89,10 @@ class Colours
      */
     public static function getForegroundCode($foregroundColour)
     {
-        if (!isset(self::$foreground_colors[$foregroundColour])) {
+        if (!isset(self::$foreground_colours[$foregroundColour])) {
             throw new \Exception('Invalid foreground colour.');
         }
-        return "\033[" . self::$foreground_colors[$foregroundColour] . 'm';
+        return "\033[" . self::$foreground_colours[$foregroundColour] . 'm';
     }
 
 
@@ -104,10 +104,10 @@ class Colours
      */
     public static function getBackgroundCode($backgroundColour)
     {
-        if (!isset(self::$background_colors[$backgroundColour])) {
+        if (!isset(self::$background_colours[$backgroundColour])) {
             throw new \Exception('Invalid background colour.');
         }
-        return "\033[" . self::$background_colors[$backgroundColour] . 'm';
+        return "\033[" . self::$background_colours[$backgroundColour] . 'm';
     }
 
 
